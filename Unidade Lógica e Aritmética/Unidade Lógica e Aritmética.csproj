@@ -55,6 +55,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Conversor.cs" />
+    <Compile Include="Decodificador.cs" />
+    <Compile Include="PortaXor.cs" />
+    <Compile Include="Somador.cs" />
+    <Compile Include="UnidadeLogica23bits.cs" />
+    <Compile Include="UnidadeLogica8bits.cs" />
+    <Compile Include="UnidadeLogicaPontoFlutuante.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,6 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PortaAnd.cs" />
+    <Compile Include="PortaNot.cs" />
+    <Compile Include="PortaOr.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

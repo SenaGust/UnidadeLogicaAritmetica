@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Unidade_Lógica_e_Aritmética
 {
-    class PortaAnd
+    class PortaOr
     {
-        public bool And(bool a, bool b)
+        public bool Or(bool a, bool b)
         {
-            return a&b;
+            return a | b;
         }
-        public bool And(bool a, bool b, bool c, bool d)
+        public bool Or(bool a, bool b, bool c, bool d)
         {
-            return (And(a, b) & And(c, d));
+            return (Or(a, b) | Or(c, d));
         }
     }
 }
