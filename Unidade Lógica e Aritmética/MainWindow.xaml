@@ -5,8 +5,30 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Unidade_Lógica_e_Aritmética"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="MainWindow" Height="450" Width="732">
+    <Grid Margin="0,0,2,0">
+        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,57,0,0"/>
+        <TextBox HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,138,0,0"/>
+        <Button x:Name="buttonSoma" Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Margin="84,216,0,0"/>
+        <Button x:Name="buttonSubtracao" Content="-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Margin="84,281,0,0"/>
+        <Button x:Name="button_AandB" Content="A AND B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="321,216,0,0"/>
+        <Button x:Name="button_AorB" Content="A OR B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="321,281,0,0"/>
+        <Button x:Name="button_notA" Content="NOT A" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,216,0,0"/>
+        <Button x:Name="button_notB" Content="NOT B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,281,0,0"/>
+        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,57,0,0"/>
+        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,138,0,0"/>
+        <TextBox HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,353,0,0"/>
+        <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,354,0,0"/>
+        <Button x:Name="buttonSair" Content="Sair" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="322,388,0,0"/>
+        <Label x:Name="labelOperando1_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.237,2" Margin="373,62,0,0"/>
+        <Label x:Name="labelOperando2_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="373,144,0,0" RenderTransformOrigin="0.068,0.423"/>
+        <Label x:Name="labelOperando1_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="11.263,3.615" Margin="615,62,0,0"/>
+        <Label x:Name="labelOperando2_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="3.316,2.308" Margin="615,144,0,0"/>
+        <Label x:Name="labelResultado" Content="Resultado" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,351,0,0"/>
+        <Label x:Name="labelResultado_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="373,357,0,0"/>
+        <Label x:Name="Operando1" Content="Operando 1 (A)" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="2.816,2.231" Margin="84,54,0,0"/>
+        <Label x:Name="Operando2" Content="Operando 2 (B)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,135,0,0"/>
+        <Label x:Name="labelResultado_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="20.13,4.808" Margin="615,357,0,0"/>
+
     </Grid>
 </Window>
