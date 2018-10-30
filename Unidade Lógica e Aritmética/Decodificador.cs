@@ -27,5 +27,14 @@ namespace Unidade_Lógica_e_Aritmética
          * 1    A - B
          * 
          */
+        
+        public void decodificadorInteiro()
+        {
+
+        }
+        public void decodificadorPontoFlutuante()
+        {
+
+        }
     }
 }
