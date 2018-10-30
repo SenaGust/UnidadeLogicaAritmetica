@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace Unidade_Lógica_e_Aritmética
 {
     class UnidadeLogicaPontoFlutuante
-    
-
+    { 
     }
 }
