@@ -24,5 +24,12 @@ namespace Unidade_Lógica_e_Aritmética
         {
             InitializeComponent();
         }
+
+        float x, y;
+
+        private void buttonSoma_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -23,16 +23,45 @@ namespace Unidade_Lógica_e_Aritmética
         {
             return null;
         }
-        public int BinarioParaInteiro()
+        public int BinarioParaInteiro(bool[] vetBin)
         {
-            return 0;
+            int numero = 0;
+
+            for (int i = (vetBin.Length - 1); i > -1; i--)
+                if (vetBin[i])
+                    numero += Convert.ToInt32(Math.Pow(2, i));
+
+            return numero;
         }
         public float BinarioParaFloat()
         {
             return 0;
         }
-        public string BinarioParaHexadecimal()
+        public string BinarioParaHexadecimal(bool[] vetBin)
         {
+            //bool[] seg = new bool[4];
+            //int pos = 0;
+
+            //for (int i = (vetBin.Length - 1); i > -1; i--)
+            //{
+            //    if (pos < 4)
+            //    {
+            //        seg[pos] = vetBin[i];
+            //        pos++;
+            //    }                    
+            //    else
+            //    {
+            //        switch (seg)
+            //        {
+            //            case 0000:
+            //        }
+            //    }
+                   
+            //}
+                
+           
+
+            
             return null;
         }
     }
