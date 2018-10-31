@@ -28,13 +28,30 @@ namespace Unidade_Lógica_e_Aritmética
          * 
          */
         
-        public void decodificadorInteiro()
+        public void decodificadorInteiro(bool F2, bool F1, bool F0, out bool d0, out bool d1, out bool d2, out bool d3, out bool d4, out bool d5, out bool d6, out bool d7)
         {
+            PortaNot p0 = new PortaNot();
+            PortaNot p1 = new PortaNot();
+            PortaNot p2 = new PortaNot();
+            PortaAnd p3 = new PortaAnd();
+            PortaAnd p4 = new PortaAnd();
 
+            d0 = p3.And(p4.And(p0.Not(F2), p1.Not(F1)), p2.Not(F0)); //000 - negar as três
+            d1 = p3.And(p4.And(p0.Not(F2), p1.Not(F1)), F0); //001 - negar as duas primeiras
+            d2 = p3.And(p4.And(p0.Not(F2), F1), p1.Not(F0)); //010 - negar a primeira e a última
+            d3 = p3.And(p4.And(p0.Not(F2), F1), F0); //011 - negar a primeira
+            d4 = p3.And(p4.And(F2, p1.Not(F1)), p2.Not(F0)); //100 - negar as duas últimas
+            d5 = p3.And(p4.And(F2, p1.Not(F1)), F0); //101 - negar a do meio
+            d6 = p3.And(p4.And(F2, F1), p2.Not(F0)); //110 - negar a última
+            d7 = p3.And(p4.And(F2, F1), F0); //111 -
+            
         }
-        public void decodificadorPontoFlutuante()
+        public void decodificadorPontoFlutuante(bool F0, out bool d0, out bool d1)
         {
+            PortaNot p0 = new PortaNot();
 
+            d0 = p0.Not(F0);
+            d1 = F0;
         }
     }
 }
