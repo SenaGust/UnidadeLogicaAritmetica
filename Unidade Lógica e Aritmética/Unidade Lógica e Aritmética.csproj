@@ -59,7 +59,7 @@
     <Compile Include="Decodificador.cs" />
     <Compile Include="PortaXor.cs" />
     <Compile Include="Somador.cs" />
-    <Compile Include="UnidadeLogica23bits.cs" />
+    <Compile Include="UnidadeLogica24bits.cs" />
     <Compile Include="UnidadeLogica8bits.cs" />
     <Compile Include="UnidadeLogicaPontoFlutuante.cs" />
     <Page Include="MainWindow.xaml">
