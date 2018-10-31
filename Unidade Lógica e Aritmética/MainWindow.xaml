@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Unidade_Lógica_e_Aritmética"
         mc:Ignorable="d"
-        Title="MainWindow" Height="470" Width="732">
-    <Grid Margin="0,0,2,0">
+        Title="MainWindow" Height="469" Width="732">
+    <Grid Margin="0,0,2,0" Height="440" VerticalAlignment="Top">
         <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,57,0,0"/>
         <TextBox HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,138,0,0"/>
         <Button x:Name="buttonSoma" Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Margin="84,216,0,0"/>
@@ -19,7 +19,7 @@
         <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,138,0,0"/>
         <TextBox HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,353,0,0"/>
         <TextBox HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,354,0,0"/>
-        <Button x:Name="buttonSair" Content="Sair" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="322,408,0,0"/>
+        <Button x:Name="buttonSair" Content="Sair" HorizontalAlignment="Left" Width="75" Margin="322,397,0,0" Height="22" VerticalAlignment="Top"/>
         <Label x:Name="labelOperando1_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.237,2" Margin="373,62,0,0"/>
         <Label x:Name="labelOperando2_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="373,144,0,0" RenderTransformOrigin="0.068,0.423"/>
         <Label x:Name="labelOperando1_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="11.263,3.615" Margin="615,62,0,0"/>

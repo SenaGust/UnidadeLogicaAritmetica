@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Unidade_Lógica_e_Aritmética
 {
-    class UnidadeLogica23bits
+    class UnidadeLogica24bits
     {
     }
 }
