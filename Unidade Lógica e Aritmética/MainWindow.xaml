@@ -10,11 +10,11 @@
         <TextBox x:Name="textBoxOperando1" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,57,0,0"/>
         <TextBox x:Name="textBoxOperando2" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,138,0,0"/>
         <Button x:Name="buttonSoma" Content="+" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Margin="84,216,0,0" Click="buttonSoma_Click"/>
-        <Button x:Name="buttonSubtracao" Content="-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Margin="84,281,0,0"/>
+        <Button x:Name="buttonSubtracao" Content="-" HorizontalAlignment="Left" VerticalAlignment="Top" Width="74" Margin="84,281,0,0" Click="buttonSubtracao_Click"/>
         <Button x:Name="button_AandB" Content="A AND B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="321,216,0,0" Click="button_AandB_Click"/>
         <Button x:Name="button_AorB" Content="A OR B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="321,281,0,0" Click="button_AorB_Click"/>
-        <Button x:Name="button_notA" Content="NOT A" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,216,0,0"/>
-        <Button x:Name="button_notB" Content="NOT B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,281,0,0"/>
+        <Button x:Name="button_notA" Content="NOT A" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,216,0,0" Click="button_notA_Click"/>
+        <Button x:Name="button_notB" Content="NOT B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,281,0,0" Click="button_notB_Click"/>
         <TextBox x:Name="textBoxOperando16A" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,57,0,0"/>
         <TextBox x:Name="textBoxOperando16B" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,138,0,0"/>
         <TextBox x:Name="resultado10" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,353,0,0"/>

@@ -38,17 +38,13 @@ namespace Unidade_Lógica_e_Aritmética
         {
             return null;
         }
-        public bool[] Complemento2()
-        {
-            return null;
-        }
         public int BinarioParaInteiro(bool[] vetBin)
         {
             int numero = 0;
 
-            for (int i = (vetBin.Length - 1); i > -1; i--)
+            for (int i = (vetBin.Length - 1); i >= 0; i--)
                 if (vetBin[i])
-                    numero += Convert.ToInt32(Math.Pow(2, i));
+                    numero += Convert.ToInt32(Math.Pow(2, (vetBin.Length - 1) - i));
 
             return numero;
         }
