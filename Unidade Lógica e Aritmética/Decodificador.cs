@@ -42,8 +42,8 @@ namespace Unidade_Lógica_e_Aritmética
             d3 = p3.And(p4.And(p0.Not(F2), F1), F0); //011 - negar a primeira
             d4 = p3.And(p4.And(F2, p1.Not(F1)), p2.Not(F0)); //100 - negar as duas últimas
             d5 = p3.And(p4.And(F2, p1.Not(F1)), F0); //101 - negar a do meio
-            d6 = p3.And(p4.And(F2, F1), p2.Not(F0)); //110 - negar a última
-            d7 = p3.And(p4.And(F2, F1), F0); //111 -
+            d6 = false; //110 - negar a última
+            d7 = false; //111 -
             
         }
         public void decodificadorPontoFlutuante(bool F0, out bool d0, out bool d1)
