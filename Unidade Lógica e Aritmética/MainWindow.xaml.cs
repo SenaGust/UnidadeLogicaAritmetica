@@ -22,6 +22,7 @@ namespace Unidade_Lógica_e_Aritmética
     {
         public MainWindow()
         {
+            MessageBox.Show("Esta unidade lógica e aritmética está funcionando com até 8 bits.", "Aviso Importante", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             InitializeComponent();
         }
 
