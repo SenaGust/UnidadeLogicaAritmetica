@@ -24,5 +24,17 @@ namespace Unidade_Lógica_e_Aritmética
         {
             InitializeComponent();
         }
+
+        float x, y;
+        bool val1, val2;
+
+        private void buttonSoma_Click(object sender, RoutedEventArgs e)
+        {
+            x = Convert.ToSingle(textBoxOperando1.Text);
+            y = Convert.ToSingle(textBoxOperando2.Text);
+
+            //mudar para ponto flutuante
+            
+        }
     }
 }
