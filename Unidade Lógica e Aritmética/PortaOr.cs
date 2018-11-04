@@ -14,7 +14,11 @@ namespace Unidade_Lógica_e_Aritmética
         }
         public bool Or(bool a, bool b, bool c, bool d)
         {
-            return (Or(a, b) | Or(c, d));
+            return Or(Or(a, b), Or(c, d));
+        }
+        public bool Or(bool a, bool b, bool c, bool d, bool e, bool f, bool g, bool h)
+        {
+            return Or( Or(Or(a, b), Or(c, d)), Or(Or(e, f), Or(g, h)));
         }
     }
 }
