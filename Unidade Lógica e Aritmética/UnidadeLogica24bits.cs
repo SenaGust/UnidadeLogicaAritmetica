@@ -46,7 +46,7 @@ namespace Unidade_Lógica_e_Aritmética
          * 1  1  1    -
          */
 
-        public bool ULA8Bits(bool[] a, bool[] b, bool[] f, bool[] s)
+        public bool ULA24Bits(bool[] a, bool[] b, bool[] f, bool[] s)
         {
             bool vai1, vem1 = false;
             s[23] = ALU7.ULA1Bit(a[23], b[23], f, vem1, out vai1);

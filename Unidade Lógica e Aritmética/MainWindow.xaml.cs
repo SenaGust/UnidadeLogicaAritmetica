@@ -82,8 +82,8 @@ namespace Unidade_Lógica_e_Aritmética
             F[0] = false; F[1] = false; F[2] = true; // F2F1F0 =  101 	A + NOT(B) + 1						
             ALU8.ULA8Bits(resultado, um, F, resultado);
 
-            resultado16.Text = Converter.BinarioParaHexadecimal(resultado);
-            resultado10.Text = Convert.ToString(Converter.BinarioParaInteiro(resultado));
+            textBoxResultado16.Text = Converter.BinarioParaHexadecimal(resultado);
+            textBoxResultado10.Text = Convert.ToString(Converter.BinarioParaInteiro(resultado));
             textBoxOperando16A.Text = Converter.BinarioParaHexadecimal(A);
             textBoxOperando16B.Text = Converter.BinarioParaHexadecimal(B);
         }
@@ -102,6 +102,17 @@ namespace Unidade_Lógica_e_Aritmética
             //0  1  1  Not B
             bool[] f = { true, true, false }; //o contrario
             chamarULA8Bits(Convert.ToInt32(textBoxOperando1.Text), Convert.ToInt32(textBoxOperando2.Text), f);
+        }
+
+        private void buttonLimpar_Click(object sender, RoutedEventArgs e)
+        {
+            textBoxOperando1.Clear();
+            textBoxOperando2.Clear();
+            textBoxOperando16A.Clear();
+            textBoxOperando16B.Clear();
+            textBoxResultado10.Clear();
+            textBoxResultado16.Clear();
+            textBoxOperando1.Focus();
         }
 
         private void buttonSair_Click(object sender, RoutedEventArgs e)
@@ -128,12 +139,10 @@ namespace Unidade_Lógica_e_Aritmética
                 MessageBox.Show("Houve overflow", "Erro", MessageBoxButton.OKCancel, MessageBoxImage.Error);
 
             //mostrando resultados
-            resultado16.Text = Converter.BinarioParaHexadecimal(resultado);
-            resultado10.Text = Convert.ToString(Converter.BinarioParaInteiro(resultado));
+            textBoxResultado16.Text = Converter.BinarioParaHexadecimal(resultado);
+            textBoxResultado10.Text = Convert.ToString(Converter.BinarioParaInteiro(resultado));
             textBoxOperando16A.Text = Converter.BinarioParaHexadecimal(numA);
             textBoxOperando16B.Text = Converter.BinarioParaHexadecimal(numB);
-        }
-
-        
+        }       
     }
 }
