@@ -22,7 +22,25 @@ namespace Unidade_Lógica_e_Aritmética
     {
         public MainWindow()
         {
+            Conversor con = new Conversor();
             InitializeComponent();
+
+            bool[] um = {false, false, false, false, false, false, false, true };
+            bool[] dois = {false, false, false, false, false, false, true, false };
+            bool[] tres = {false, false, false, false, false, false, true, true };
+            bool[] zero = {false, false, false, false, false, false, false, false };
+
+            Console.WriteLine("Sem complemento 2");
+            Console.WriteLine(con.complemento2ParaDecimal(um));
+            Console.WriteLine(con.complemento2ParaDecimal(dois));
+            Console.WriteLine(con.complemento2ParaDecimal(tres));
+            Console.WriteLine(con.complemento2ParaDecimal(zero));
+
+            Console.WriteLine("Com complemento 2");
+            Console.WriteLine(con.complemento2ParaDecimal(con.decimalParaComplemento2(um)));
+            Console.WriteLine(con.complemento2ParaDecimal(con.decimalParaComplemento2(dois)));
+            Console.WriteLine(con.complemento2ParaDecimal(con.decimalParaComplemento2(tres)));
+            Console.WriteLine(con.complemento2ParaDecimal(con.decimalParaComplemento2(zero)));
         }
 
         #region Implementação dos botões da ULA
@@ -97,7 +115,9 @@ namespace Unidade_Lógica_e_Aritmética
         #region Ponto Flutuante
         private void chamarULAPontoFlutuante(bool[] f, float a, float b, bool possuiNegativo)
         {
-
+            Conversor con = new Conversor();
+            Console.WriteLine(con.imprimirBinario(con.PontoFlutuanteParaBinario(a)));
+            Console.WriteLine(con.imprimirBinario(con.PontoFlutuanteParaBinario(b)));
         }
 
         private bool procuraVirgula(string numero)
@@ -116,9 +136,11 @@ namespace Unidade_Lógica_e_Aritmética
         private void chamarULAinteiroPositivo(bool[] f, int a, int b, int tamanho)
         {
             Conversor converter = new Conversor();
-            bool inverteu = false;
+            bool inverteu = false, complemento2A = false, complemento2B = false;
+            bool[] A, B;
+            int resposta;
 
-            if(b>a)
+            if(b>a && f[2] & !f[1] & f[0])
             {
                 inverteu = true;
                 int aux = a;
@@ -126,12 +148,29 @@ namespace Unidade_Lógica_e_Aritmética
                 b = aux;
             }
 
-            //transformar int em binário
-            bool[] A = converter.InteiroParaBinario(tamanho, a);
-            bool[] B = converter.InteiroParaBinario(tamanho, b);
+            //convertendo pra complemento 2 binario
+            if (a < 0)
+            {
+                a *= -1; complemento2A = true;
+                A = converter.decimalParaComplemento2(converter.InteiroParaBinario(tamanho, a));
+            }
+            else
+            {
+                A = converter.InteiroParaBinario(tamanho, a);
+            }
+            if (b < 0)
+            {
+                b *= -1; complemento2B = true;
+                B = converter.decimalParaComplemento2(converter.InteiroParaBinario(tamanho, b));
+            }
+            else
+            {
+                B = converter.InteiroParaBinario(tamanho, b);
+            }
 
             if (f[2] & !f[1] & f[0]) //SE SUBTRAÇÃO
-                B = converter.complemento2(B);
+                B = converter.decimalParaComplemento2(B);
+
 
             bool overflowSoma;
             bool[] resultado = new bool[tamanho];
@@ -153,14 +192,18 @@ namespace Unidade_Lógica_e_Aritmética
             }
 
             //resultado
+            if (complemento2A || complemento2B)
+                resposta = converter.complemento2ParaDecimal(resultado);
+            else
+                resposta = converter.BinarioParaInteiro(resultado);
+
+
             if (inverteu)
             {
-                textBoxResultado10.Text = converter.BinarioParaInteiro(resultado) * -1 + " ";
+                resposta *= -1;
             }
-            else
-            {
-                textBoxResultado10.Text = converter.BinarioParaInteiro(resultado) + " ";
-            }
+
+            textBoxResultado10.Text = resposta + " ";
             textBoxResultado16.Text = converter.imprimirBinario(resultado);
             textBoxOperando16A.Text = converter.imprimirBinario(A);
             textBoxOperando16B.Text = converter.imprimirBinario(B);
@@ -178,8 +221,9 @@ namespace Unidade_Lógica_e_Aritmética
                 {
                     float a = float.Parse(textBoxOperando1.Text);
                     float b = float.Parse(textBoxOperando2.Text);
-
+                    Console.WriteLine();
                     //chamar ula de 32 bits
+                    chamarULAPontoFlutuante(f,a,b,false);
                 }
                 catch (FormatException)
                 {
@@ -224,20 +268,22 @@ namespace Unidade_Lógica_e_Aritmética
                     else
                     {
                         double maximo8bits = (Math.Pow(2, 8 - 1) - 1);
-                        double minimo8bits = (Math.Pow(2, 8 - 1));
+                        double minimo8bits = -(Math.Pow(2, 8 - 1));
                         double maximo24bits = (Math.Pow(2, 24 - 1) - 1);
-                        double minimo24bits = (Math.Pow(2, 24 - 1));
+                        double minimo24bits = -(Math.Pow(2, 24 - 1));
                         if (a >= minimo8bits && b >= minimo8bits && a <= maximo8bits && b <= maximo8bits)
                         {
                             //ula 8 bits
                             //inteiro
                             //negativos e positivos
+                            chamarULAinteiroPositivo(f, a, b, 8);
                         }
                         else if (a >= minimo24bits && b >= minimo24bits && a <= maximo24bits && b <= maximo24bits)
                         {
                             //ula 24 bits
                             //inteiro
                             //negativos e positivos
+                            chamarULAinteiroPositivo(f, a, b, 24);
                         }
                         else
                         {
