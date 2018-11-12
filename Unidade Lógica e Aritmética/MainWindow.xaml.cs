@@ -95,7 +95,10 @@ namespace Unidade_Lógica_e_Aritmética
         #endregion
 
         #region Ponto Flutuante
+        private void chamarULAPontoFlutuante(bool[] f, float a, float b, bool possuiNegativo)
+        {
 
+        }
 
         private bool procuraVirgula(string numero)
         {

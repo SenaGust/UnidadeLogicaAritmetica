@@ -146,11 +146,117 @@ namespace Unidade_Lógica_e_Aritmética
             return numB16; // retorna o número na base 16
         }
         #endregion
-        
+
         #region Ponto Flutuante
         public bool[] PontoFlutuanteParaBinario(float numero)
         {
-            return null;
+            //numero = -111.25f; // Apagar*********************
+
+            // determina quantos digitos compõe a parte fracionária do número
+            string numCompleto = numero.ToString(), resultInt = null, resultFracion = null, resultado = null;
+            string[] numDec = numCompleto.Split(',');
+            int quant_Frac = numDec[1].Length, parteInteira, resto;
+            float partedecimal;
+            float digitoInt = 1; // parte inteira da conversão da parte fracionária
+
+            if (numero >= 0)
+            {
+                parteInteira = Convert.ToInt32(Math.Truncate(numero)); // determina a parte inteira do número
+                partedecimal = Convert.ToSingle(Math.Round(numero - Convert.ToSingle(parteInteira), quant_Frac)); // determina a parte fracionária
+            }
+            else
+            {
+                parteInteira = Convert.ToInt32(numDec[0].Trim('-')); // determina a parte inteira do número
+                partedecimal = Convert.ToSingle(Math.Round(numero - Convert.ToSingle(Math.Truncate(numero)), quant_Frac) * -1); // determina a parte fracionária
+            }
+
+            Console.WriteLine(partedecimal); Console.ReadKey();
+
+            // Conversão da parte inteira (base 10 -> base 2)
+            while (parteInteira > 0)
+            {
+                resto = parteInteira % 2;
+                parteInteira /= 2;
+                resultInt = resto.ToString() + resultInt;
+            }
+
+            // Conversão da parte fracionária (base 10 -> base 2)
+            while (digitoInt != 0) // adicionar um tamanho limite ***************
+            {
+                numCompleto = (partedecimal * 2).ToString(); // armazena a parte fracionária * 2, no atributo tipo string numCompleto
+                numDec = numCompleto.Split(','); // separa a parte inteira e fracionária
+
+                resultFracion += numDec[0]; // armazena o resultado em binario no atributo tipo string resultDecimal
+
+                if (Convert.ToSingle(numDec[0]) != 0) // se a parte inteira for diferente de zero, o valor da próxima multiplicação tem -1 subtraído
+                    partedecimal = Convert.ToSingle(numCompleto) - 1;
+                else
+                    partedecimal = Convert.ToSingle(numCompleto);
+
+                digitoInt = partedecimal; // será testado pelo while se a parte fracionária ainda não chegou a zero             
+            }
+
+            resultado = resultInt + resultFracion; // numero binário com parte inteira e fracionária
+
+            int expoente = resultInt.Length * -1; // determina o valor do expoente baseado em quantas 'casas' a vírgula vai ter que andar
+
+            bool[] mantissa32 = new bool[32]; // cria o vetor para armazenar a mantissa de 32 bits
+
+            // determina o bit do sinal
+            if (numero >= 0)
+                mantissa32[0] = false;
+            else
+                mantissa32[0] = true;
+
+            // determina o valor do expoente na base 2
+            bool[] expoente8bits = InteiroParaBinario(8, expoente);
+
+            string exp8bitsNormalizado = null;
+            int expComum;
+
+            for (int t = 0; t < expoente8bits.Length; t++)
+            {
+                if (expoente8bits[t])
+                    exp8bitsNormalizado += 1;
+                else
+                    exp8bitsNormalizado += 0;
+            }
+
+            expComum = Convert.ToInt32(exp8bitsNormalizado);
+
+            exp8bitsNormalizado = Convert.ToString(expComum - 0000011, 2);
+
+            // grava o expoente na mantissa32
+            for (int i = 1; i < 8; i++)
+            {
+                if (Convert.ToInt32(exp8bitsNormalizado[i - 1]) == 49) // 49 == true, 48 == false
+                    mantissa32[i] = true;
+                else
+                    mantissa32[i] = false;
+            }
+
+            // grava a mantissa na mantissa32
+            for (int x = 0; x < resultado.Length; x++)
+            {
+                if (Convert.ToInt32(resultado[x]) == 49)
+                    mantissa32[x + 9] = true;
+                else
+                    mantissa32[x + 9] = false;
+            }
+
+            Console.WriteLine("resultado: " + resultado);
+            Console.WriteLine("expoente (int): " + expoente);
+
+            for (int f = 0; f < expoente8bits.Length; f++)
+                Console.WriteLine("expoente8bits[{0}] = {1}", f, expoente8bits[f]);
+
+            Console.WriteLine("expComum: " + expComum);
+            Console.WriteLine("exp8bitsNormalizado:" + exp8bitsNormalizado);
+
+            for (int g = 0; g < mantissa32.Length; g++)
+                Console.WriteLine("mantissa32[{0}] = {1}", g, mantissa32[g]);
+
+            return mantissa32;
         }
         public float BinarioParaFloat()
         {
