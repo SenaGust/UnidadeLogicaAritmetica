@@ -22,17 +22,17 @@ namespace Unidade_Lógica_e_Aritmética
     {
         public MainWindow()
         {
-            MessageBox.Show("Esta unidade lógica e aritmética está funcionando com até 8 bits.", "Aviso Importante", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             InitializeComponent();
         }
 
-        #region Implementação dos botões
+        #region Implementação dos botões da ULA
         private void button_AandB_Click(object sender, RoutedEventArgs e)
         {
             //F2 F1 F0 Saída
             //0  0  0  A and B
             bool[] f = { false, false, false }; //o contrario
-            chamarULA8Bits(Convert.ToInt32(textBoxOperando1.Text), Convert.ToInt32(textBoxOperando2.Text), f);
+            encaminhaULA(f);
+            
         }
 
         private void button_AorB_Click(object sender, RoutedEventArgs e)
@@ -40,7 +40,7 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //0  0  1  A or B
             bool[] f = { true, false, false }; //o contrario
-            chamarULA8Bits(Convert.ToInt32(textBoxOperando1.Text), Convert.ToInt32(textBoxOperando2.Text), f);
+            encaminhaULA(f);
         }
 
         private void buttonSoma_Click(object sender, RoutedEventArgs e)
@@ -48,44 +48,15 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //1  0  0  A + B
             bool[] f = { false, false, true }; //o contrario
-            chamarULA8Bits(Convert.ToInt32(textBoxOperando1.Text), Convert.ToInt32(textBoxOperando2.Text), f);
+            encaminhaULA(f); 
         }
 
         private void buttonSubtracao_Click(object sender, RoutedEventArgs e)
         {
-            UnidadeLogica8bits ALU8 = new UnidadeLogica8bits();
-            Conversor Converter = new Conversor();
-
-            bool[] F = new bool[3];
-            bool[] um = { false, false, false, false, false, false, false, true };
-
-            bool[] A = Converter.InteiroParaBinario(8, Convert.ToInt32(textBoxOperando1.Text));
-            bool[] B = Converter.InteiroParaBinario(8, Convert.ToInt32(textBoxOperando2.Text));
-            bool[] resultado = new bool[8];
-
-        //    *F2 F1 F0 Saída
-        //* 0  0  0  A and B
-        //* 0  0  1  A or B
-        //* 0  1  0  Not A
-        // *0  1  1  Not B
-        // *1  0  0  A + B
-        //* 1  0  1  A - B
-        //* 1  1  0 -
-        //*1  1  1 -
-
-
-          // A-B = A - NOT(B) + 1						
-          F[0] = true; F[1] = true; F[2] = false;  // *0  1  1  Not B 	NOT(B)	
-            ALU8.ULA8Bits(A, B, F, resultado);
-            F[0] = false; F[1] = false; F[2] = true;  // *1  0  0  A + B 	A + NOT(B)						
-            ALU8.ULA8Bits(A, resultado, F, resultado);
-            F[0] = false; F[1] = false; F[2] = true; // F2F1F0 =  101 	A + NOT(B) + 1						
-            ALU8.ULA8Bits(resultado, um, F, resultado);
-
-            textBoxResultado16.Text = Converter.BinarioParaHexadecimal(resultado);
-            textBoxResultado10.Text = Convert.ToString(Converter.BinarioParaInteiro(resultado));
-            textBoxOperando16A.Text = Converter.BinarioParaHexadecimal(A);
-            textBoxOperando16B.Text = Converter.BinarioParaHexadecimal(B);
+            //F2 F1 F0 Saída
+            //1  0  1  A - B ou (A + (-B))
+            bool[] f = { true, false, true }; //o contrario
+            encaminhaULA(f);
         }
 
         private void button_notA_Click(object sender, RoutedEventArgs e)
@@ -93,7 +64,7 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //0  1  0  Not A
             bool[] f = { false, true, false }; //o contrario
-            chamarULA8Bits(Convert.ToInt32(textBoxOperando1.Text), Convert.ToInt32(textBoxOperando2.Text), f);
+            encaminhaULA(f);
         }
 
         private void button_notB_Click(object sender, RoutedEventArgs e)
@@ -101,9 +72,11 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //0  1  1  Not B
             bool[] f = { true, true, false }; //o contrario
-            chamarULA8Bits(Convert.ToInt32(textBoxOperando1.Text), Convert.ToInt32(textBoxOperando2.Text), f);
+            encaminhaULA(f);
         }
+        #endregion
 
+        #region Botões adicionais
         private void buttonLimpar_Click(object sender, RoutedEventArgs e)
         {
             textBoxOperando1.Clear();
@@ -121,28 +94,164 @@ namespace Unidade_Lógica_e_Aritmética
         }
         #endregion
 
-        private void chamarULA8Bits(int a, int b, bool[] f)
+        #region Ponto Flutuante
+
+
+        private bool procuraVirgula(string numero)
         {
-            //objetos
-            Conversor Converter = new Conversor();
-            UnidadeLogica8bits alu = new UnidadeLogica8bits();
+            for (int pos = 0; pos < numero.Length; pos++)
+            {
+                if (numero[pos] == ',')
+                    return true;
+            }
 
-            //converter os dois números inteiros para binários, nesse caso 8 bits máximo
-            bool[] numA = Converter.InteiroParaBinario(8, Convert.ToInt32(textBoxOperando1.Text));
-            bool[] numB = Converter.InteiroParaBinario(8, Convert.ToInt32(textBoxOperando2.Text));
+            return false;
+        }
+        #endregion
 
-            //chamando ula
-            bool[] resultado = new bool[8];
-            bool over = alu.ULA8Bits(numA, numB, f, resultado);
+        #region Inteiro
+        private void chamarULAinteiroPositivo(bool[] f, int a, int b, int tamanho)
+        {
+            Conversor converter = new Conversor();
+            bool inverteu = false;
 
-            if (over)
-                MessageBox.Show("Houve overflow", "Erro", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+            if(b>a)
+            {
+                inverteu = true;
+                int aux = a;
+                a = b;
+                b = aux;
+            }
 
-            //mostrando resultados
-            textBoxResultado16.Text = Converter.BinarioParaHexadecimal(resultado);
-            textBoxResultado10.Text = Convert.ToString(Converter.BinarioParaInteiro(resultado));
-            textBoxOperando16A.Text = Converter.BinarioParaHexadecimal(numA);
-            textBoxOperando16B.Text = Converter.BinarioParaHexadecimal(numB);
-        }       
+            //transformar int em binário
+            bool[] A = converter.InteiroParaBinario(tamanho, a);
+            bool[] B = converter.InteiroParaBinario(tamanho, b);
+
+            if (f[2] & !f[1] & f[0]) //SE SUBTRAÇÃO
+                B = converter.complemento2(B);
+
+            bool overflowSoma;
+            bool[] resultado = new bool[tamanho];
+
+            if(tamanho == 8) //8 bits
+            {
+                UnidadeLogica8bits ula = new UnidadeLogica8bits();
+                overflowSoma = ula.ULA8Bits(A, B, f, resultado);
+            }
+            else //24 bits
+            {
+                UnidadeLogica24bits ula = new UnidadeLogica24bits();
+                overflowSoma = ula.ULA24Bits(A, B, f, resultado);
+            }
+
+            if(overflowSoma)
+            {
+                MessageBox.Show("Houve overflow durante a soma", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
+            //resultado
+            if (inverteu)
+            {
+                textBoxResultado10.Text = converter.BinarioParaInteiro(resultado) * -1 + " ";
+            }
+            else
+            {
+                textBoxResultado10.Text = converter.BinarioParaInteiro(resultado) + " ";
+            }
+            textBoxResultado16.Text = converter.imprimirBinario(resultado);
+            textBoxOperando16A.Text = converter.imprimirBinario(A);
+            textBoxOperando16B.Text = converter.imprimirBinario(B);
+            
+        }
+        #endregion
+
+        private void encaminhaULA(bool[] f)
+        {
+            //esse método chama a ULA certa
+            if (procuraVirgula(textBoxOperando1.Text) || (procuraVirgula(textBoxOperando2.Text)))
+            {
+                //Se existir virgula, vamos usar a ULA para numero "fracionário"
+                try
+                {
+                    float a = float.Parse(textBoxOperando1.Text);
+                    float b = float.Parse(textBoxOperando2.Text);
+
+                    //chamar ula de 32 bits
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Os campos Operando 1 e/ou Operando 2 não possuem um formato correto.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (OverflowException)
+                {
+                    MessageBox.Show("Erro: Estes número não podem ser representas usando uma ULA de 32 (ponto flutuante)", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                //numero inteiro
+                try
+                {
+                    int a = Convert.ToInt32(textBoxOperando1.Text);
+                    int b = Convert.ToInt32(textBoxOperando2.Text);
+
+                    if (a >= 0 && b >= 0)
+                    {
+                        double limite8bits = (Math.Pow(2, 8) - 1);
+                        double limite24bits = (Math.Pow(2, 24) - 1);
+                        if (a <= limite8bits && b <= limite8bits)
+                        {
+                            //ula 8 bits
+                            //inteiro
+                            //apenas positivos
+                            chamarULAinteiroPositivo(f, a, b, 8);
+                        }
+                        else if (a <= limite24bits && b <= limite24bits)
+                        {
+                            //ula 24 bits
+                            //inteiro
+                            //apenas positivos
+                            chamarULAinteiroPositivo(f, a, b, 24);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Erro: não é possível representar os números informados com 24 bits.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    else
+                    {
+                        double maximo8bits = (Math.Pow(2, 8 - 1) - 1);
+                        double minimo8bits = (Math.Pow(2, 8 - 1));
+                        double maximo24bits = (Math.Pow(2, 24 - 1) - 1);
+                        double minimo24bits = (Math.Pow(2, 24 - 1));
+                        if (a >= minimo8bits && b >= minimo8bits && a <= maximo8bits && b <= maximo8bits)
+                        {
+                            //ula 8 bits
+                            //inteiro
+                            //negativos e positivos
+                        }
+                        else if (a >= minimo24bits && b >= minimo24bits && a <= maximo24bits && b <= maximo24bits)
+                        {
+                            //ula 24 bits
+                            //inteiro
+                            //negativos e positivos
+                        }
+                        else
+                        {
+                            MessageBox.Show("Não é possível representar esses números com a ULA de 24 bits.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+                catch(FormatException)
+                {
+                    MessageBox.Show("Os campos Operando 1 e / ou Operando 2 não possuem um formato correto.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                catch (OverflowException)
+                {
+                    
+                    MessageBox.Show("Não é possível representar esses números com a nossa ULA.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
     }
 }

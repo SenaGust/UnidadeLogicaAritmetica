@@ -8,13 +8,7 @@ namespace Unidade_Lógica_e_Aritmética
 {
     class Conversor
     {
-        /* 
-         * Conversão decimal binário
-         * Complemento - 2 (trocar sinal)
-         * Conversão binário para inteiro
-         * Conversão binário para ponto flutuante
-         * Conversão binário para hexadecimal
-         */
+        #region Positivos
         public bool[] InteiroParaBinario(int tamanho, int numero)
         {
             bool[] resultado = new bool[tamanho];
@@ -34,10 +28,6 @@ namespace Unidade_Lógica_e_Aritmética
 
             return resultado;
         }
-        public bool[] PontoFlutuanteParaBinario(float numero)
-        {
-            return null;
-        }
         public int BinarioParaInteiro(bool[] vetBin)
         {
             int numero = 0;
@@ -48,10 +38,46 @@ namespace Unidade_Lógica_e_Aritmética
 
             return numero;
         }
-        public float BinarioParaFloat()
+        #endregion
+
+        #region Negativos
+        public bool[] complemento2(bool[] bin)
         {
-            return 0;
+            bool[] resultado = new bool[bin.Length];
+            bool[] f = new bool[3];
+
+            if (bin.Length == 8) //8 bits
+            {
+                bool[] um = { false, false, false, false, false, false, false, true };
+                UnidadeLogica8bits ula = new UnidadeLogica8bits();
+
+                f[0] = true; f[1] = true; f[2] = false; //0  1  1  Not B
+                ula.ULA8Bits(um, bin, f, resultado);
+
+                bin = resultado;
+
+                f[0] = false; f[1] = false; f[2] = true; //1  0  0  A + B
+                ula.ULA8Bits(um, bin, f, resultado);
+            }
+            else //24 bits
+            {
+                UnidadeLogica24bits ula = new UnidadeLogica24bits();
+                bool[] um = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true };
+
+                f[0] = true; f[1] = true; f[2] = false; //0  1  1  Not B
+                ula.ULA24Bits(um, bin, f, resultado);
+
+                bin = resultado;
+
+                f[0] = false; f[1] = false; f[2] = true; //1  0  0  A + B
+                ula.ULA24Bits(um, bin, f, resultado);
+            }
+
+            return resultado;
         }
+        #endregion
+
+        #region Hexadecimal
         public string BinarioParaHexadecimal(bool[] vetBin)
         {
             string seg = null, numB16 = null; // seg (segmento do número), numB16 ( número base 16)
@@ -119,6 +145,18 @@ namespace Unidade_Lógica_e_Aritmética
 
             return numB16; // retorna o número na base 16
         }
+        #endregion
+        
+        #region Ponto Flutuante
+        public bool[] PontoFlutuanteParaBinario(float numero)
+        {
+            return null;
+        }
+        public float BinarioParaFloat()
+        {
+            return 0;
+        }
+        #endregion
 
         public string imprimirBinario(bool[] bin)
         {
@@ -133,7 +171,7 @@ namespace Unidade_Lógica_e_Aritmética
                     result += "0";
             }
 
-            return result;  
+            return result;
         }
     }
 }

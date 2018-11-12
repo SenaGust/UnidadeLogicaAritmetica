@@ -52,7 +52,7 @@ namespace Unidade_Lógica_e_Aritmética
             M[2] = P2.Not(a); 
             M[3] = P3.Not(b);
             M[4] = add.Ativa(a, b, vem1, out vai1); //soma
-            M[5] = false; //subtração
+            M[5] = sub.Ativa(a, b, vem1, out vai1); ; //subtração
             M[6] = false; // sem função
             M[7] = false; // sem função
             
