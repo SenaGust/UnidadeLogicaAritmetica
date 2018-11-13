@@ -116,8 +116,7 @@ namespace Unidade_Lógica_e_Aritmética
         private void chamarULAPontoFlutuante(bool[] f, float a, float b, bool possuiNegativo)
         {
             Conversor con = new Conversor();
-            Console.WriteLine(con.imprimirBinario(con.PontoFlutuanteParaBinario(a)));
-            Console.WriteLine(con.imprimirBinario(con.PontoFlutuanteParaBinario(b)));
+            
         }
 
         private bool procuraVirgula(string numero)

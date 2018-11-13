@@ -15,10 +15,10 @@
         <Button x:Name="button_AorB" Content="A OR B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="321,281,0,0" Click="button_AorB_Click"/>
         <Button x:Name="button_notA" Content="NOT A" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,216,0,0" Click="button_notA_Click"/>
         <Button x:Name="button_notB" Content="NOT B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,281,0,0" Click="button_notB_Click"/>
-        <TextBox x:Name="textBoxOperando16A" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,57,0,0"/>
-        <TextBox x:Name="textBoxOperando16B" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,138,0,0"/>
-        <TextBox x:Name="textBoxResultado10" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,353,0,0"/>
-        <TextBox x:Name="textBoxResultado16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,354,0,0"/>
+        <TextBox x:Name="textBoxOperando16A" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,57,0,0" IsReadOnly="True"/>
+        <TextBox x:Name="textBoxOperando16B" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,138,0,0" IsReadOnly="True"/>
+        <TextBox x:Name="textBoxResultado10" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,353,0,0" IsReadOnly="True"/>
+        <TextBox x:Name="textBoxResultado16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,354,0,0" IsReadOnly="True"/>
         <Button x:Name="buttonSair" Content="Sair" HorizontalAlignment="Left" Width="75" Margin="324,437,0,0" Height="22" VerticalAlignment="Top" Click="buttonSair_Click"/>
         <Label x:Name="labelOperando1_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.237,2" Margin="373,62,0,0"/>
         <Label x:Name="labelOperando2_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="373,144,0,0" RenderTransformOrigin="0.068,0.423"/>
