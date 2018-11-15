@@ -58,6 +58,7 @@
     <Compile Include="Conversor.cs" />
     <Compile Include="Decodificador.cs" />
     <Compile Include="PortaXor.cs" />
+    <Compile Include="ShiftLogical.cs" />
     <Compile Include="Somador.cs" />
     <Compile Include="UnidadeLogica1bit.cs" />
     <Compile Include="UnidadeLogica24bits.cs" />
