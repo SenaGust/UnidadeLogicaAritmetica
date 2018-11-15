@@ -23,6 +23,16 @@ namespace Unidade_Lógica_e_Aritmética
     {
         public MainWindow()
         {
+            MessageBox.Show("A ULA possui alguns códigos da ula de ponto flutuante. Entretanto, funciona apenas 8 e 24 bits.", "Informação", MessageBoxButton.OK, MessageBoxImage.Information);
+
+
+            string programadores = "Integrantes: ";
+            programadores += "\n\tGustavo Sena";
+            programadores += "\n\tJoão Víctor Soares";
+            programadores += "\n\tLorena Aguilar";
+            programadores += "\n\tNathan Ribeiro";
+            MessageBox.Show(programadores, "Programadores", MessageBoxButton.OK, MessageBoxImage.Information);
+
             InitializeComponent();
         }
 
@@ -142,6 +152,7 @@ namespace Unidade_Lógica_e_Aritmética
             //após valores convertidos 
             //separar valores
 
+            #region separar o vetor em mantissa, expoente e sinal
             bool sinalA = false;
             bool[] expoenteA = new bool[8];
             bool[] mantissaA = new bool[23];
@@ -149,7 +160,9 @@ namespace Unidade_Lógica_e_Aritmética
             bool sinalB = false;
             bool[] expoenteB = new bool[8];
             bool[] mantissaB = new bool[23];
+            #endregion
 
+            #region igualar o expoente
             while (con.imprimirBinario(expoenteA) != con.imprimirBinario(expoenteB))
             {
                 if (con.BinarioParaInteiro(expoenteB) < con.BinarioParaInteiro(expoenteA))
@@ -163,8 +176,10 @@ namespace Unidade_Lógica_e_Aritmética
                     ula8.ULA8Bits(expoenteA, um, fazerSoma, expoenteA); //aumentar o expoente A em 1
                 }
             }
+            #endregion
 
-            bool sinal;
+            #region Fazer soma ou subtração
+            bool sinal = false;
             bool[] resultadoSomaMantissa = new bool[23];
             bool[] resultadoExpoente = new bool[8];
 
@@ -181,15 +196,28 @@ namespace Unidade_Lógica_e_Aritmética
             {
 
             }
+            #endregion
 
+            #region Reunir para o vetor resultado final
             bool[] resultadoFinal = new bool[32];
-            //juntar
-            for (int pos = 0; pos < 32; pos++)
-            {
+            resultadoFinal[0] = sinal; //colocar  sinal
 
+            int posicaoExpoente = 0;
+            for (int pos = 1; pos < 9; pos++)
+            {
+                resultadoFinal[pos] = resultadoExpoente[posicaoExpoente];
+                posicaoExpoente++;
             }
 
-            return null;
+            int posicaoMantissa = 0;
+            for (int pos = 9; pos < 32; pos++)
+            {
+                resultadoFinal[pos] = resultadoExpoente[posicaoMantissa];
+                posicaoMantissa++;
+            }
+            #endregion
+
+            return resultadoFinal;
         }
 
         private bool procuraVirgula(string numero)
@@ -258,10 +286,10 @@ namespace Unidade_Lógica_e_Aritmética
                 overflowSoma = ula.ULA24Bits(A, B, f, resultado);
             }
 
-            if(overflowSoma)
-            {
-                MessageBox.Show("Houve overflow durante a soma", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            //if(overflowSoma)
+            //{
+            //    MessageBox.Show("Houve overflow durante a soma", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
 
             //resultado
             if (complemento2A || complemento2B)
@@ -282,8 +310,12 @@ namespace Unidade_Lógica_e_Aritmética
         private void imprimirResultadoTela(bool[] binario)
         {
             Conversor con = new Conversor();
+            if(binario == null)
+            {
+                //evitar erros, pela falta de tempo não foi implementada
 
-            if (binario.Length == 8 || binario.Length == 24)
+            }
+            else if (binario.Length == 8 || binario.Length == 24)
             {
                 //converter resultado pra binario
                 int A = Convert.ToInt32(textBoxOperando1.Text);
@@ -320,7 +352,7 @@ namespace Unidade_Lógica_e_Aritmética
             }
             else if (binario.Length == 32)
             {
-                MessageBox.Show("Não implementada");
+                // MessageBox.Show("Não implementada");
             } 
             else
             {
@@ -336,13 +368,37 @@ namespace Unidade_Lógica_e_Aritmética
             if (procuraVirgula(A) || (procuraVirgula(B)))
             {
                 //Se existir virgula, vamos usar a ULA para numero "fracionário"
+                resultado = new bool[32];
                 try
                 {
-                    float a = float.Parse(A);
-                    float b = float.Parse(B);
-                    Console.WriteLine();
-                    //chamar ula de 32 bits
-                    resultado = chamarULAPontoFlutuante(f,a,b);
+                    bool implementada = false;
+
+                    if (implementada)
+                    {
+                        float a = float.Parse(A);
+                        float b = float.Parse(B);
+
+                        //chamar ula de 32 bits
+                        if (!f[0] & !f[1] & f[2])
+                        {
+                            //f = false;
+                            resultado = chamarULAPontoFlutuante(false, a, b);
+                        }
+                        else if (f[0] & !f[1] & f[2])
+                        {
+                            //f = true;
+                            resultado = chamarULAPontoFlutuante(true, a, b);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Não é possível usar essa operação para a ULA de 32 bits", "ERRO", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Implementação da ULA de 32 bits em andamento.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    
                 }
                 catch (FormatException)
                 {
@@ -501,10 +557,14 @@ namespace Unidade_Lógica_e_Aritmética
 
                         arqui.Write("SUBTRAÇÃO:");
                         arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(sub, matriz[pos, 0], matriz[pos, 1])));
-                         
 
+                        arqui.WriteLine();
+                        arqui.WriteLine();
+                        arqui.WriteLine();
                     }
                     arqui.Close();
+
+                    MessageBox.Show("Checar arquivo resultado.txt");
                 }
                 else { MessageBox.Show("arquivo inexistente"); }
             }
