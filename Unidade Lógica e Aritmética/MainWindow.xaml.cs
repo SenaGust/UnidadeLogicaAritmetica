@@ -33,8 +33,11 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //0  0  0  A and B
             bool[] f = { false, false, false }; //o contrario
-            encaminhaULA(f);
-            
+            Conversor con = new Conversor();
+
+            string A = textBoxOperando1.Text;
+            string B = textBoxOperando2.Text;
+            imprimirResultadoTela(encaminhaULA(f, A, B));
         }
 
         //Botão a or b
@@ -43,7 +46,11 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //0  0  1  A or B
             bool[] f = { true, false, false }; //o contrario
-            encaminhaULA(f);
+            Conversor con = new Conversor();
+
+            string A = textBoxOperando1.Text;
+            string B = textBoxOperando2.Text;
+            imprimirResultadoTela(encaminhaULA(f, A, B));
         }
 
         //Botão de adição
@@ -52,7 +59,11 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //1  0  0  A + B
             bool[] f = { false, false, true }; //o contrario
-            encaminhaULA(f); 
+            Conversor con = new Conversor();
+
+            string A = textBoxOperando1.Text;
+            string B = textBoxOperando2.Text;
+            imprimirResultadoTela(encaminhaULA(f, A, B));
         }
 
         //Botão de subtração
@@ -61,7 +72,11 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //1  0  1  A - B ou (A + (-B))
             bool[] f = { true, false, true }; //o contrario
-            encaminhaULA(f);
+            Conversor con = new Conversor();
+
+            string A = textBoxOperando1.Text;
+            string B = textBoxOperando2.Text;
+            imprimirResultadoTela(encaminhaULA(f, A, B));
         }
 
         //botão not a 
@@ -70,7 +85,11 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //0  1  0  Not A
             bool[] f = { false, true, false }; //o contrario
-            encaminhaULA(f);
+            Conversor con = new Conversor();
+
+            string A = textBoxOperando1.Text;
+            string B = textBoxOperando2.Text;
+            imprimirResultadoTela(encaminhaULA(f, A, B));
         }
 
         //botão not b
@@ -79,7 +98,12 @@ namespace Unidade_Lógica_e_Aritmética
             //F2 F1 F0 Saída
             //0  1  1  Not B
             bool[] f = { true, true, false }; //o contrario
-            encaminhaULA(f);
+            Conversor con = new Conversor();
+
+            string A = textBoxOperando1.Text;
+            string B = textBoxOperando2.Text;
+
+            imprimirResultadoTela(encaminhaULA(f, A, B));
         }
         #endregion
 
@@ -104,15 +128,15 @@ namespace Unidade_Lógica_e_Aritmética
         #endregion
 
         #region Ponto Flutuante
-        private bool[] chamarULAPontoFlutuante(bool[] f, float a, float b, bool possuiNegativo)
+        private bool[] chamarULAPontoFlutuante(bool[] f, float a, float b)
         {
             Conversor con = new Conversor();
-            bool[] resultado = [33];
+            bool[] resultado = new bool[33];
 
             //após valores convertidos 
 
 
-
+            return null;
         }
 
         private bool procuraVirgula(string numero)
@@ -128,7 +152,7 @@ namespace Unidade_Lógica_e_Aritmética
         #endregion
 
         #region Inteiro
-        private void chamarULAinteiroPositivo(bool[] f, int a, int b, int tamanho)
+        private bool[] chamarULAinteiroPositivo(bool[] f, int a, int b, int tamanho)
         {
             Conversor converter = new Conversor();
             bool inverteu = false, complemento2A = false, complemento2B = false;
@@ -197,31 +221,75 @@ namespace Unidade_Lógica_e_Aritmética
             {
                 resposta *= -1;
             }
-
-            textBoxResultado10.Text = resposta + " ";
-            textBoxResultado16.Text = converter.imprimirBinario(resultado);
-            textBoxOperando16A.Text = converter.imprimirBinario(A);
-            textBoxOperando16B.Text = converter.imprimirBinario(B);
-            
+            return resultado;
         }
         #endregion
 
-        
-
-        private void encaminhaULA(bool[] f)
+        #region Tela
+        private void imprimirResultadoTela(bool[] binario)
         {
-            
+            Conversor con = new Conversor();
+
+            if (binario.Length == 8 || binario.Length == 24)
+            {
+                //converter resultado pra binario
+                int A = Convert.ToInt32(textBoxOperando1.Text);
+                int B = Convert.ToInt32(textBoxOperando2.Text);
+
+                if (A > 0 && B > 0)
+                {
+                    textBoxResultado10.Text = Convert.ToString(con.BinarioParaInteiro(binario));
+                    textBoxResultado16.Text = Convert.ToString(con.BinarioParaHexadecimal(binario));
+                    textBoxOperando16A.Text = Convert.ToString(con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, A)));
+                    textBoxOperando16B.Text = Convert.ToString(con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, B)));
+                }
+                else
+                {
+                    int resultado = con.complemento2ParaDecimal(binario);
+
+                    textBoxResultado10.Text = Convert.ToString(resultado);
+
+                    if (resultado >= 0)
+                        textBoxResultado16.Text = con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, resultado));
+                    else
+                        textBoxResultado16.Text = "-" + con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, resultado * -1));
+
+                    if (A >= 0)
+                        textBoxOperando16A.Text = Convert.ToString(con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, A)));
+                    else
+                        textBoxOperando16A.Text = "-" + Convert.ToString(con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, A)));
+
+                    if (B >= 0)
+                        textBoxOperando16B.Text = Convert.ToString(con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, B)));
+                    else
+                        textBoxOperando16B.Text = "-" + Convert.ToString(con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, B)));
+                }
+            }
+            else if (binario.Length == 32)
+            {
+                MessageBox.Show("Não implementada");
+            } 
+            else
+            {
+                MessageBox.Show("ERROOOO");
+            }
+        }
+        #endregion
+
+        private bool[] encaminhaULA(bool[] f, string A, string B)
+        {
+            bool[] resultado = null;
             //esse método chama a ULA certa
-            if (procuraVirgula(textBoxOperando1.Text) || (procuraVirgula(textBoxOperando2.Text)))
+            if (procuraVirgula(A) || (procuraVirgula(B)))
             {
                 //Se existir virgula, vamos usar a ULA para numero "fracionário"
                 try
                 {
-                    float a = float.Parse(textBoxOperando1.Text);
-                    float b = float.Parse(textBoxOperando2.Text);
+                    float a = float.Parse(A);
+                    float b = float.Parse(B);
                     Console.WriteLine();
                     //chamar ula de 32 bits
-                    chamarULAPontoFlutuante(f,a,b,false);
+                    resultado = chamarULAPontoFlutuante(f,a,b);
                 }
                 catch (FormatException)
                 {
@@ -249,14 +317,14 @@ namespace Unidade_Lógica_e_Aritmética
                             //ula 8 bits
                             //inteiro
                             //apenas positivos
-                            chamarULAinteiroPositivo(f, a, b, 8);
+                            resultado = chamarULAinteiroPositivo(f, a, b, 8);
                         }
                         else if (a <= limite24bits && b <= limite24bits)
                         {
                             //ula 24 bits
                             //inteiro
                             //apenas positivos
-                            chamarULAinteiroPositivo(f, a, b, 24);
+                            resultado = chamarULAinteiroPositivo(f, a, b, 24);
                         }
                         else
                         {
@@ -274,14 +342,14 @@ namespace Unidade_Lógica_e_Aritmética
                             //ula 8 bits
                             //inteiro
                             //negativos e positivos
-                            chamarULAinteiroPositivo(f, a, b, 8);
+                            resultado = chamarULAinteiroPositivo(f, a, b, 8);
                         }
                         else if (a >= minimo24bits && b >= minimo24bits && a <= maximo24bits && b <= maximo24bits)
                         {
                             //ula 24 bits
                             //inteiro
                             //negativos e positivos
-                            chamarULAinteiroPositivo(f, a, b, 24);
+                            resultado = chamarULAinteiroPositivo(f, a, b, 24);
                         }
                         else
                         {
@@ -299,11 +367,15 @@ namespace Unidade_Lógica_e_Aritmética
                     MessageBox.Show("Não é possível representar esses números com a nossa ULA.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            return resultado;
         }
 
         public void Ler_aquivo()
         {
             string path = "operandos.txt";
+            string[,] matriz = new string[100, 2];
+            int posMatriz = 0;
+
             try
             {
                 if (File.Exists(path))
@@ -312,14 +384,29 @@ namespace Unidade_Lógica_e_Aritmética
                     string[] vetor;
                     StreamReader arquivo = new StreamReader(path);
                     
-                    while (!arquivo.EndOfStream)
+                    while (!arquivo.EndOfStream && )
                     {
                         linha = arquivo.ReadLine();
                         vetor = linha.Split(';');
-                        textBoxOperando1.Text = vetor[0];
-                        textBoxOperando2.Text = vetor[1];
+                        matriz[posMatriz,0] = vetor[0];
+                        matriz[posMatriz,1] = vetor[1];
+                        posMatriz++;
                     }
                     arquivo.Close();
+
+                    StreamWriter arqui = new StreamWriter("resultado.txt");
+                    //escrever novo arquivo
+                    for (int pos = 0; pos < posMatriz; pos++)
+                    {
+                        arqui.WriteLine("Operando A: {0}, Operando B: {1}", matriz[pos, 0], matriz[pos, 1]);
+                        arqui.WriteLine("AND:");
+                        arqui.WriteLine("OR:");
+                        arqui.WriteLine("NOT A:");
+                        arqui.WriteLine("NOT B:");
+                        arqui.WriteLine("SOMA:");
+                        arqui.WriteLine("SUBTRAÇÃO:");
+                    }
+                    arqui.Close();
                 }
                 else { MessageBox.Show("arquivo inexistente"); }
             }
