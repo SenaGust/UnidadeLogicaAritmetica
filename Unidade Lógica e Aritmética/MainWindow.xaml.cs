@@ -22,25 +22,7 @@ namespace Unidade_Lógica_e_Aritmética
     {
         public MainWindow()
         {
-            Conversor con = new Conversor();
             InitializeComponent();
-
-            bool[] um = {false, false, false, false, false, false, false, true };
-            bool[] dois = {false, false, false, false, false, false, true, false };
-            bool[] tres = {false, false, false, false, false, false, true, true };
-            bool[] zero = {false, false, false, false, false, false, false, false };
-
-            Console.WriteLine("Sem complemento 2");
-            Console.WriteLine(con.complemento2ParaDecimal(um));
-            Console.WriteLine(con.complemento2ParaDecimal(dois));
-            Console.WriteLine(con.complemento2ParaDecimal(tres));
-            Console.WriteLine(con.complemento2ParaDecimal(zero));
-
-            Console.WriteLine("Com complemento 2");
-            Console.WriteLine(con.complemento2ParaDecimal(con.decimalParaComplemento2(um)));
-            Console.WriteLine(con.complemento2ParaDecimal(con.decimalParaComplemento2(dois)));
-            Console.WriteLine(con.complemento2ParaDecimal(con.decimalParaComplemento2(tres)));
-            Console.WriteLine(con.complemento2ParaDecimal(con.decimalParaComplemento2(zero)));
         }
 
         #region Implementação dos botões da ULA
