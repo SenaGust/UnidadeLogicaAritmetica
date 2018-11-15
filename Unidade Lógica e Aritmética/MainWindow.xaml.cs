@@ -305,8 +305,8 @@ namespace Unidade_Lógica_e_Aritmética
                 //numero inteiro
                 try
                 {
-                    int a = Convert.ToInt32(textBoxOperando1.Text);
-                    int b = Convert.ToInt32(textBoxOperando2.Text);
+                    int a = Convert.ToInt32(A);
+                    int b = Convert.ToInt32(B);
 
                     if (a >= 0 && b >= 0)
                     {
@@ -370,7 +370,7 @@ namespace Unidade_Lógica_e_Aritmética
             return resultado;
         }
 
-        public void Ler_aquivo()
+        public void calcularArquivo()
         {
             string path = "operandos.txt";
             string[,] matriz = new string[100, 2];
@@ -384,27 +384,50 @@ namespace Unidade_Lógica_e_Aritmética
                     string[] vetor;
                     StreamReader arquivo = new StreamReader(path);
                     
-                    while (!arquivo.EndOfStream && )
+                    while (!arquivo.EndOfStream && posMatriz < 100)
                     {
                         linha = arquivo.ReadLine();
                         vetor = linha.Split(';');
                         matriz[posMatriz,0] = vetor[0];
+                        Console.WriteLine(vetor[0]);
                         matriz[posMatriz,1] = vetor[1];
+                        Console.WriteLine(vetor[1]);
                         posMatriz++;
                     }
                     arquivo.Close();
 
                     StreamWriter arqui = new StreamWriter("resultado.txt");
+                    Conversor conv = new Conversor();
+
+                    bool[] and = { false, false, false };
+                    bool[] or = { true, false, false };
+                    bool[] notA = { false, true, false };
+                    bool[] notB = { true, true, false };
+                    bool[] soma = { false, false, true };
+                    bool[] sub = { true, false, true };
+
                     //escrever novo arquivo
                     for (int pos = 0; pos < posMatriz; pos++)
                     {
                         arqui.WriteLine("Operando A: {0}, Operando B: {1}", matriz[pos, 0], matriz[pos, 1]);
-                        arqui.WriteLine("AND:");
+                        arqui.WriteLine("AND: ");
+                        //0  0  0  A and B
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(and, matriz[pos, 0], matriz[pos, 1])));
+
                         arqui.WriteLine("OR:");
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(or, matriz[pos, 0], matriz[pos, 1])));
+
                         arqui.WriteLine("NOT A:");
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(notA, matriz[pos, 0], matriz[pos, 1])));
+
                         arqui.WriteLine("NOT B:");
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(notB, matriz[pos, 0], matriz[pos, 1])));
+
                         arqui.WriteLine("SOMA:");
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(soma, matriz[pos, 0], matriz[pos, 1])));
+
                         arqui.WriteLine("SUBTRAÇÃO:");
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(sub, matriz[pos, 0], matriz[pos, 1])));
                     }
                     arqui.Close();
                 }
@@ -417,30 +440,9 @@ namespace Unidade_Lógica_e_Aritmética
             
         }
 
-        /*public void Salvar_arquivo()
-        {
-            string path2 = "resultados.txt";
-            try
-            {
-                if(File.Exists(path2))
-                {
-                    StreamWriter arqwrite = new StreamWriter(path2);
-                    arqwrite.Write("\nOperando 1: " + textBoxOperando1.Text);
-                    arqwrite.Write("\nOperando 2: " + textBoxOperando2.Text);
-                    bool [] g = { false, false, false };
-                    encaminhaULA(g);
-                    //arqwrite.Write("\nA and B: " + encaminhaULA(g));
-                }
-            }
-            catch(Exception a)
-            {
-                MessageBox.Show(a.Message);
-            }
-        }*/
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Ler_aquivo();
+            calcularArquivo();
         }
     }
 }

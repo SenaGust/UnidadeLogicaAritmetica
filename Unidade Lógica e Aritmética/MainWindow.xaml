@@ -30,7 +30,7 @@
         <Label x:Name="Operando2" Content="Operando 2 (B)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,135,0,0"/>
         <Label x:Name="labelResultado_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="20.13,4.808" Margin="642,357,0,0"/>
         <Button x:Name="buttonLimpar" Content="Limpar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="200,418,0,0" Click="buttonLimpar_Click"/>
-        <Button Content="Carregar arquivo" HorizontalAlignment="Left" Margin="308,418,0,0" VerticalAlignment="Top" Width="102" Click="Button_Click" Height="22"/>
+        <Button Content="Calcular Arquivo" HorizontalAlignment="Left" Margin="308,418,0,0" VerticalAlignment="Top" Width="102" Click="Button_Click" Height="22"/>
         <Label Content=" Unidade Lógica e Aritmética" HorizontalAlignment="Left" Margin="280,10,0,0" VerticalAlignment="Top" FontWeight="ExtraBold"/>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="26" Margin="280,10,0,0" VerticalAlignment="Top" Width="180"/>
 
