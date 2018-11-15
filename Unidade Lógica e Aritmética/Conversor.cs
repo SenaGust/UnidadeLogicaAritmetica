@@ -165,11 +165,121 @@ namespace Unidade_Lógica_e_Aritmética
         #region Ponto Flutuante
         public bool[] PontoFlutuanteParaBinario(float numero)
         {
-            return null;
-        }
-        public float BinarioParaFloat()
-        {
-            return 0;
+            //numero = 10f; // Apagar*********
+
+            // determina quantos digitos compõe a parte fracionária do número
+            string numCompleto = numero.ToString(), resultInt = null, resultFracion = null, resultado = null;
+            string[] numDec = numCompleto.Split(',');
+            int quant_Frac = 0, parteInteira, resto;
+            float partedecimal;
+            float digitoInt = 1; // parte inteira da conversão da parte fracionária
+
+            if (numDec.Length > 1)
+                quant_Frac = numDec[1].Length;
+
+            if (numero >= 0)
+            {
+                parteInteira = Convert.ToInt32(Math.Truncate(numero)); // determina a parte inteira do número
+                partedecimal = Convert.ToSingle(Math.Round(numero - Convert.ToSingle(parteInteira), quant_Frac)); // determina a parte fracionária
+            }
+            else
+            {
+                parteInteira = Convert.ToInt32(numDec[0].Trim('-')); // determina a parte inteira do número
+                partedecimal = Convert.ToSingle(Math.Round(numero - Convert.ToSingle(Math.Truncate(numero)), quant_Frac) * -1); // determina a parte fracionária
+            }
+
+            Console.WriteLine(partedecimal); Console.ReadKey();
+
+            // Conversão da parte inteira (base 10 -> base 2)
+            while (parteInteira > 0)
+            {
+                resto = parteInteira % 2;
+                parteInteira /= 2;
+                resultInt = resto.ToString() + resultInt;
+            }
+
+            // Conversão da parte fracionária (base 10 -> base 2)
+            List<string> erroDizma = new List<string>();
+            bool atingiuDizma = false;
+
+            // testa se os digitos fracionarios atingiram zero, ou
+            // se a dizma nao ultrapassou 23 bits, ou
+            // se a parte fracionaria nao eh uma dizma periodica
+            while (digitoInt != 0 && erroDizma.Count < (23 - resultInt.Length) && !atingiuDizma)
+            {
+                numCompleto = (partedecimal * 2).ToString(); // armazena a parte fracionária * 2, no atributo tipo string numCompleto               
+                numDec = numCompleto.Split(','); // separa a parte inteira e fracionária
+
+                if (numDec.Length > 1)
+                {
+                    // testa se a parte fracionária do número encontrado pela multiplicação da partedecimal * 2 já não foi encontrado anteriormente
+                    foreach (string num in erroDizma)
+                    {
+                        if (numDec[1] == num)
+                            atingiuDizma = true;
+                    }
+
+                    erroDizma.Add(numDec[1]); // adiciona os resultados fracionários a lista com o intuito de detectar uma futura dizma periódica
+                }
+
+                resultFracion += numDec[0]; // armazena o resultado em binario no atributo tipo string resultDecimal                
+
+                if (Convert.ToSingle(numDec[0]) != 0) // se a parte inteira for diferente de zero, o valor da próxima multiplicação tem -1 subtraído
+                    partedecimal = Convert.ToSingle(numCompleto) - 1;
+                else
+                    partedecimal = Convert.ToSingle(numCompleto);
+
+                digitoInt = partedecimal; // será testado pelo while se a parte fracionária ainda não chegou a zero             
+            }
+
+            resultado = resultInt + resultFracion; // numero binário com parte inteira e fracionária
+
+            // determina o valor do expoente baseado em quantas 'casas' a vírgula vai ter que andar para normalizar a mantissa
+            // soma 127
+            // e subtrai a quantidade de cases que foram "percorridas" para esquerda
+            int expoente = (resultInt.Length + 127) - (23 - resultado.Length);
+
+            bool[] mantissa32 = new bool[32]; // cria o vetor para armazenar a mantissa de 32 bits
+
+            // determina o bit do sinal
+            if (numero >= 0)
+                mantissa32[0] = false;
+            else
+                mantissa32[0] = true;
+
+            // determina o valor do expoente na base 2
+            bool[] expoente8bits = InteiroParaBinario(8, expoente);
+
+            // grava o expoente na mantissa32
+            for (int i = 0; i < 8; i++)
+            {
+                if (expoente8bits[i])
+                    mantissa32[i + 1] = true;
+                else
+                    mantissa32[i + 1] = false;
+            }
+
+            // grava a mantissa na mantissa32
+            for (int x = 0; x < resultado.Length; x++)
+            {
+                if (Convert.ToInt32(resultado[x]) == 49)
+                    mantissa32[x + 9] = true;
+                else
+                    mantissa32[x + 9] = false;
+            }
+
+            Console.WriteLine("parte int: " + resultInt);
+            Console.WriteLine("parte fracionária: " + resultFracion);
+            Console.WriteLine("resultado: " + resultado);
+            Console.WriteLine("expoente (int): " + expoente);
+
+            for (int f = 0; f < expoente8bits.Length; f++)
+                Console.WriteLine("expoente8bits[{0}] = {1}", f, expoente8bits[f]);
+
+            for (int g = 0; g < mantissa32.Length; g++)
+                Console.WriteLine("mantissa32[{0}] = {1}", g, mantissa32[g]);
+
+            return mantissa32;
         }
         #endregion
 
