@@ -128,13 +128,66 @@ namespace Unidade_Lógica_e_Aritmética
         #endregion
 
         #region Ponto Flutuante
-        private bool[] chamarULAPontoFlutuante(bool[] f, float a, float b)
+        private bool[] chamarULAPontoFlutuante(bool f, float a, float b)
         {
             Conversor con = new Conversor();
-            bool[] resultado = new bool[33];
+            bool[] resultado = new bool[32];
+            bool[] um = { false, false, false, false, false, false, false, true };
+            UnidadeLogica8bits ula8 = new UnidadeLogica8bits();
+            UnidadeLogica32PontoFlutuante ulaMantissa = new UnidadeLogica32PontoFlutuante();
+            bool[] fazerSoma = { false, false, true };
+            bool overSoma = false;
+
 
             //após valores convertidos 
+            //separar valores
 
+            bool sinalA = false;
+            bool[] expoenteA = new bool[8];
+            bool[] mantissaA = new bool[23];
+
+            bool sinalB = false;
+            bool[] expoenteB = new bool[8];
+            bool[] mantissaB = new bool[23];
+
+            while (con.imprimirBinario(expoenteA) != con.imprimirBinario(expoenteB))
+            {
+                if (con.BinarioParaInteiro(expoenteB) < con.BinarioParaInteiro(expoenteA))
+                {
+                    mantissaB = ShiftLogical.shiftRightLogical(mantissaB);
+                    ula8.ULA8Bits(expoenteB, um, fazerSoma, expoenteB); //aumentar o expoente B em 1
+                }
+                else
+                {
+                    mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
+                    ula8.ULA8Bits(expoenteA, um, fazerSoma, expoenteA); //aumentar o expoente A em 1
+                }
+            }
+
+            bool sinal;
+            bool[] resultadoSomaMantissa = new bool[23];
+            bool[] resultadoExpoente = new bool[8];
+
+            if (!f) //se falso, soma
+            {
+                if (a > 0 && b > 0)
+                {
+                    sinal = false;
+                    overSoma = ulaMantissa.Ativa(mantissaA, mantissaB, false, resultadoSomaMantissa);
+                    resultadoExpoente = expoenteA;
+                }
+            }
+            else //se verdadeiro, subtração
+            {
+
+            }
+
+            bool[] resultadoFinal = new bool[32];
+            //juntar
+            for (int pos = 0; pos < 32; pos++)
+            {
+
+            }
 
             return null;
         }
