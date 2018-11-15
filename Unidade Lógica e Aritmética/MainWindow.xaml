@@ -15,22 +15,25 @@
         <Button x:Name="button_AorB" Content="A OR B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="321,281,0,0" Click="button_AorB_Click"/>
         <Button x:Name="button_notA" Content="NOT A" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,216,0,0" Click="button_notA_Click"/>
         <Button x:Name="button_notB" Content="NOT B" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="563,281,0,0" Click="button_notB_Click"/>
-        <TextBox x:Name="textBoxOperando16A" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,57,0,0" IsReadOnly="True"/>
-        <TextBox x:Name="textBoxOperando16B" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,138,0,0" IsReadOnly="True"/>
+        <TextBox x:Name="textBoxOperando16A" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="180" Margin="457,57,0,0" IsReadOnly="True"/>
+        <TextBox x:Name="textBoxOperando16B" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="180" Margin="457,139,0,0" IsReadOnly="True"/>
         <TextBox x:Name="textBoxResultado10" HorizontalAlignment="Left" Height="24" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="238,353,0,0" IsReadOnly="True"/>
-        <TextBox x:Name="textBoxResultado16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Margin="483,354,0,0" IsReadOnly="True"/>
+        <TextBox x:Name="textBoxResultado16" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="180" Margin="457,354,0,0" IsReadOnly="True"/>
         <Button x:Name="buttonSair" Content="Sair" HorizontalAlignment="Left" Width="75" Margin="324,437,0,0" Height="22" VerticalAlignment="Top" Click="buttonSair_Click"/>
         <Label x:Name="labelOperando1_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="1.237,2" Margin="373,62,0,0"/>
         <Label x:Name="labelOperando2_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="373,144,0,0" RenderTransformOrigin="0.068,0.423"/>
-        <Label x:Name="labelOperando1_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="11.263,3.615" Margin="615,62,0,0"/>
-        <Label x:Name="labelOperando2_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="3.316,2.308" Margin="615,144,0,0"/>
+        <Label x:Name="labelOperando1_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="11.263,3.615" Margin="642,62,0,0"/>
+        <Label x:Name="labelOperando2_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="3.316,2.308" Margin="642,143,0,0"/>
         <Label x:Name="labelResultado" Content="Resultado" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,351,0,0"/>
         <Label x:Name="labelResultado_10" Content="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="373,357,0,0"/>
         <Label x:Name="Operando1" Content="Operando 1 (A)" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="2.816,2.231" Margin="84,54,0,0"/>
         <Label x:Name="Operando2" Content="Operando 2 (B)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,135,0,0"/>
-        <Label x:Name="labelResultado_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="20.13,4.808" Margin="615,357,0,0"/>
+        <Label x:Name="labelResultado_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="20.13,4.808" Margin="642,357,0,0"/>
         <Button x:Name="buttonLimpar" Content="Limpar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="324,398,0,0" Click="buttonLimpar_Click"/>
         <Button Content="Carregar arquivo" HorizontalAlignment="Left" Margin="423,418,0,0" VerticalAlignment="Top" Width="102" Click="Button_Click"/>
+        <Label Content=" Unidade Lógica e Aritmética" HorizontalAlignment="Left" Margin="280,10,0,0" VerticalAlignment="Top" FontWeight="ExtraBold"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="26" Margin="280,10,0,0" VerticalAlignment="Top" Width="180"/>
+
 
     </Grid>
 </Window>
