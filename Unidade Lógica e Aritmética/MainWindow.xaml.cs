@@ -410,24 +410,46 @@ namespace Unidade_Lógica_e_Aritmética
                     for (int pos = 0; pos < posMatriz; pos++)
                     {
                         arqui.WriteLine("Operando A: {0}, Operando B: {1}", matriz[pos, 0], matriz[pos, 1]);
-                        arqui.WriteLine("AND: ");
+                        arqui.WriteLine("\nDECIMAL: ");
+                        arqui.Write("AND: ");
                         //0  0  0  A and B
                         arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(and, matriz[pos, 0], matriz[pos, 1])));
 
-                        arqui.WriteLine("OR:");
+                        arqui.Write("OR: ");
                         arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(or, matriz[pos, 0], matriz[pos, 1])));
 
-                        arqui.WriteLine("NOT A:");
+                        arqui.Write("NOT A: ");
                         arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(notA, matriz[pos, 0], matriz[pos, 1])));
 
-                        arqui.WriteLine("NOT B:");
+                        arqui.Write("NOT B: ");
                         arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(notB, matriz[pos, 0], matriz[pos, 1])));
 
-                        arqui.WriteLine("SOMA:");
+                        arqui.Write("SOMA: ");
                         arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(soma, matriz[pos, 0], matriz[pos, 1])));
 
-                        arqui.WriteLine("SUBTRAÇÃO:");
+                        arqui.Write("SUBTRAÇÃO: ");
                         arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(sub, matriz[pos, 0], matriz[pos, 1])));
+
+                        arqui.WriteLine("\nHEXADECIMAL: ");
+                        arqui.Write("AND: ");
+                        arqui.Write(conv.BinarioParaHexadecimal(encaminhaULA(and, matriz[pos, 0], matriz[pos, 1])));
+
+                        arqui.Write("OR: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(or, matriz[pos, 0], matriz[pos, 1])));
+
+                        arqui.Write("NOT A: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(notA, matriz[pos, 0], matriz[pos, 1])));
+
+                        arqui.Write("NOT B: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(notB, matriz[pos, 0], matriz[pos, 1])));
+
+                        arqui.Write("SOMA: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(soma, matriz[pos, 0], matriz[pos, 1])));
+
+                        arqui.Write("SUBTRAÇÃO:");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(sub, matriz[pos, 0], matriz[pos, 1])));
+                         
+
                     }
                     arqui.Close();
                 }
@@ -435,7 +457,7 @@ namespace Unidade_Lógica_e_Aritmética
             }
             catch(Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show("Erro: " + e.Message);
             }
             
         }
