@@ -61,9 +61,10 @@
     <Compile Include="ShiftLogical.cs" />
     <Compile Include="Somador.cs" />
     <Compile Include="UnidadeLogica1bit.cs" />
+    <Compile Include="UnidadeLogica1bitPontoFlutuante.cs" />
     <Compile Include="UnidadeLogica24bits.cs" />
     <Compile Include="UnidadeLogica8bits.cs" />
-    <Compile Include="UnidadeLogicaPontoFlutuante.cs" />
+    <Compile Include="UnidadeLogica32PontoFlutuante.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
