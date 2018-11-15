@@ -30,6 +30,7 @@
         <Label x:Name="Operando2" Content="Operando 2 (B)" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="85,135,0,0"/>
         <Label x:Name="labelResultado_16" Content="16" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="20.13,4.808" Margin="615,357,0,0"/>
         <Button x:Name="buttonLimpar" Content="Limpar" HorizontalAlignment="Left" VerticalAlignment="Top" Width="76" Margin="324,398,0,0" Click="buttonLimpar_Click"/>
+        <Button Content="Carregar arquivo" HorizontalAlignment="Left" Margin="423,418,0,0" VerticalAlignment="Top" Width="102" Click="Button_Click"/>
 
     </Grid>
 </Window>

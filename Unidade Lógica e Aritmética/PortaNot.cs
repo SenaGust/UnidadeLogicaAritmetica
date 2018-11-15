@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Unidade_Lógica_e_Aritmética
 {
-    class PortaNot
+    class PortaNot //Porta lógica básica Not 
     {
         public bool Not(bool a)
         {

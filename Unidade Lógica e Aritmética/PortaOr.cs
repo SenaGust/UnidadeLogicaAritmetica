@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Unidade_Lógica_e_Aritmética
 {
-    class PortaOr
+    class PortaOr //Porta lógica báscia Or
     {
         public bool Or(bool a, bool b)
         {

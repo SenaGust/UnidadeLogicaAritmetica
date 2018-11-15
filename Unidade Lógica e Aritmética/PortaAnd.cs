@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Unidade_Lógica_e_Aritmética
 {
-    class PortaAnd
+    class PortaAnd //Porta Lógica básica And
     {
         public bool And(bool a, bool b)
         {

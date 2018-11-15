@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Unidade_Lógica_e_Aritmética
 {
@@ -44,6 +45,7 @@ namespace Unidade_Lógica_e_Aritmética
         }
 
         #region Implementação dos botões da ULA
+        //Botão a and b
         private void button_AandB_Click(object sender, RoutedEventArgs e)
         {
             //F2 F1 F0 Saída
@@ -53,6 +55,7 @@ namespace Unidade_Lógica_e_Aritmética
             
         }
 
+        //Botão a or b
         private void button_AorB_Click(object sender, RoutedEventArgs e)
         {
             //F2 F1 F0 Saída
@@ -61,6 +64,7 @@ namespace Unidade_Lógica_e_Aritmética
             encaminhaULA(f);
         }
 
+        //Botão de adição
         private void buttonSoma_Click(object sender, RoutedEventArgs e)
         {
             //F2 F1 F0 Saída
@@ -69,6 +73,7 @@ namespace Unidade_Lógica_e_Aritmética
             encaminhaULA(f); 
         }
 
+        //Botão de subtração
         private void buttonSubtracao_Click(object sender, RoutedEventArgs e)
         {
             //F2 F1 F0 Saída
@@ -77,6 +82,7 @@ namespace Unidade_Lógica_e_Aritmética
             encaminhaULA(f);
         }
 
+        //botão not a 
         private void button_notA_Click(object sender, RoutedEventArgs e)
         {
             //F2 F1 F0 Saída
@@ -85,6 +91,7 @@ namespace Unidade_Lógica_e_Aritmética
             encaminhaULA(f);
         }
 
+        //botão not b
         private void button_notB_Click(object sender, RoutedEventArgs e)
         {
             //F2 F1 F0 Saída
@@ -95,6 +102,7 @@ namespace Unidade_Lógica_e_Aritmética
         #endregion
 
         #region Botões adicionais
+        //Botão limpar
         private void buttonLimpar_Click(object sender, RoutedEventArgs e)
         {
             textBoxOperando1.Clear();
@@ -106,6 +114,7 @@ namespace Unidade_Lógica_e_Aritmética
             textBoxOperando1.Focus();
         }
 
+        //Botão sair
         private void buttonSair_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -210,8 +219,11 @@ namespace Unidade_Lógica_e_Aritmética
         }
         #endregion
 
+        
+
         private void encaminhaULA(bool[] f)
         {
+            
             //esse método chama a ULA certa
             if (procuraVirgula(textBoxOperando1.Text) || (procuraVirgula(textBoxOperando2.Text)))
             {
@@ -300,6 +312,61 @@ namespace Unidade_Lógica_e_Aritmética
                     MessageBox.Show("Não é possível representar esses números com a nossa ULA.", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+        public void Ler_aquivo()
+        {
+            string path = "operandos.txt";
+            try
+            {
+                if (File.Exists(path))
+                {
+                    string linha;
+                    string[] vetor;
+                    StreamReader arquivo = new StreamReader(path);
+                    
+                    while (!arquivo.EndOfStream)
+                    {
+                        linha = arquivo.ReadLine();
+                        vetor = linha.Split(';');
+                        textBoxOperando1.Text = vetor[0];
+                        textBoxOperando2.Text = vetor[1];
+                    }
+                    arquivo.Close();
+                }
+                else { MessageBox.Show("arquivo inexistente"); }
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+            
+        }
+
+        /*public void Salvar_arquivo()
+        {
+            string path2 = "resultados.txt";
+            try
+            {
+                if(File.Exists(path2))
+                {
+                    StreamWriter arqwrite = new StreamWriter(path2);
+                    arqwrite.Write("\nOperando 1: " + textBoxOperando1.Text);
+                    arqwrite.Write("\nOperando 2: " + textBoxOperando2.Text);
+                    bool [] g = { false, false, false };
+                    encaminhaULA(g);
+                    //arqwrite.Write("\nA and B: " + encaminhaULA(g));
+                }
+            }
+            catch(Exception a)
+            {
+                MessageBox.Show(a.Message);
+            }
+        }*/
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Ler_aquivo();
         }
     }
 }
