@@ -23,6 +23,7 @@ namespace Unidade_Lógica_e_Aritmética
         PortaAnd P9 = new PortaAnd();
         PortaOr P10 = new PortaOr();
         PortaNot P11 = new PortaNot();
+
         /*
          * Tabela
          * F2 F1 F0 Saída

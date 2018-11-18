@@ -36,91 +36,68 @@ namespace Unidade_Lógica_e_Aritmética
             InitializeComponent();
         }
 
+        #region vetores usados nos decodificadores
+        //Tabela inteiro
+        // F2 F1 F0 Saída
+        // 0  0  0  A and B
+        // 0  0  1  A or B
+        // 0  1  0  Not A
+        // 0  1  1  Not B
+        // 1  0  0  A + B
+        // 1  0  1  A - B
+        // 1  1  0    -
+        // 1  1  1    -
+
+        bool[] decodificadorAnd = { false, false, false };
+        bool[] decodificadorOr = { true, false, false };
+        bool[] decodificadorNotA = { false, true, false };
+        bool[] decodificadorNotB = { true, true, false };
+        bool[] decodificadorSoma = { false, false, true };
+        bool[] decodificadorSubtracao = { true, false, true };
+        #endregion
+
         #region Implementação dos botões da ULA
-        //Botão a and b
         private void button_AandB_Click(object sender, RoutedEventArgs e)
         {
-            //F2 F1 F0 Saída
-            //0  0  0  A and B
-            bool[] f = { false, false, false }; //o contrario
-            Conversor con = new Conversor();
-
-            string A = textBoxOperando1.Text;
-            string B = textBoxOperando2.Text;
-            imprimirResultadoTela(encaminhaULA(f, A, B));
+            //Botão A and B
+            imprimirResultadoTela(encaminhaULA(decodificadorAnd, textBoxOperando1.Text, textBoxOperando2.Text));
         }
-
-        //Botão a or b
         private void button_AorB_Click(object sender, RoutedEventArgs e)
         {
-            //F2 F1 F0 Saída
-            //0  0  1  A or B
-            bool[] f = { true, false, false }; //o contrario
-            Conversor con = new Conversor();
-
-            string A = textBoxOperando1.Text;
-            string B = textBoxOperando2.Text;
-            imprimirResultadoTela(encaminhaULA(f, A, B));
+            //Botão A or B
+            imprimirResultadoTela(encaminhaULA(decodificadorOr, textBoxOperando1.Text, textBoxOperando2.Text));
         }
-
-        //Botão de adição
         private void buttonSoma_Click(object sender, RoutedEventArgs e)
         {
-            //F2 F1 F0 Saída
-            //1  0  0  A + B
-            bool[] f = { false, false, true }; //o contrario
-            Conversor con = new Conversor();
-
-            string A = textBoxOperando1.Text;
-            string B = textBoxOperando2.Text;
-            imprimirResultadoTela(encaminhaULA(f, A, B));
+            //Botão Adição
+            imprimirResultadoTela(encaminhaULA(decodificadorSoma, textBoxOperando1.Text, textBoxOperando2.Text));
         }
-
-        //Botão de subtração
         private void buttonSubtracao_Click(object sender, RoutedEventArgs e)
         {
-            //F2 F1 F0 Saída
-            //1  0  1  A - B ou (A + (-B))
-            bool[] f = { true, false, true }; //o contrario
-            Conversor con = new Conversor();
-
-            string A = textBoxOperando1.Text;
-            string B = textBoxOperando2.Text;
-            imprimirResultadoTela(encaminhaULA(f, A, B));
+            //Botão subtração
+            imprimirResultadoTela(encaminhaULA(decodificadorSubtracao, textBoxOperando1.Text, textBoxOperando2.Text));
         }
-
-        //botão not a 
         private void button_notA_Click(object sender, RoutedEventArgs e)
         {
-            //F2 F1 F0 Saída
-            //0  1  0  Not A
-            bool[] f = { false, true, false }; //o contrario
-            Conversor con = new Conversor();
-
-            string A = textBoxOperando1.Text;
-            string B = textBoxOperando2.Text;
-            imprimirResultadoTela(encaminhaULA(f, A, B));
+            //Botão Not A
+            imprimirResultadoTela(encaminhaULA(decodificadorNotA, textBoxOperando1.Text, textBoxOperando2.Text));
         }
-
-        //botão not b
         private void button_notB_Click(object sender, RoutedEventArgs e)
         {
-            //F2 F1 F0 Saída
-            //0  1  1  Not B
-            bool[] f = { true, true, false }; //o contrario
-            Conversor con = new Conversor();
-
-            string A = textBoxOperando1.Text;
-            string B = textBoxOperando2.Text;
-
-            imprimirResultadoTela(encaminhaULA(f, A, B));
+            //botão Not B
+            imprimirResultadoTela(encaminhaULA(decodificadorNotB, textBoxOperando1.Text, textBoxOperando2.Text));
         }
         #endregion
 
         #region Botões adicionais
-        //Botão limpar
+        private void buttonArquivo(object sender, RoutedEventArgs e)
+        {
+            //botão arquivo
+            calcularArquivo();
+        }
         private void buttonLimpar_Click(object sender, RoutedEventArgs e)
         {
+            //Botão limpar
             textBoxOperando1.Clear();
             textBoxOperando2.Clear();
             textBoxOperando16A.Clear();
@@ -129,186 +106,19 @@ namespace Unidade_Lógica_e_Aritmética
             textBoxResultado16.Clear();
             textBoxOperando1.Focus();
         }
-
-        //Botão sair
         private void buttonSair_Click(object sender, RoutedEventArgs e)
         {
+            //botão fechar
             this.Close();
-        }
-        #endregion
-
-        #region Ponto Flutuante
-        private bool[] chamarULAPontoFlutuante(bool f, float a, float b)
-        {
-            Conversor con = new Conversor();
-            bool[] resultado = new bool[32];
-            bool[] um = { false, false, false, false, false, false, false, true };
-            UnidadeLogica8bits ula8 = new UnidadeLogica8bits();
-            UnidadeLogica32PontoFlutuante ulaMantissa = new UnidadeLogica32PontoFlutuante();
-            bool[] fazerSoma = { false, false, true };
-            bool overSoma = false;
-
-
-            //após valores convertidos 
-            //separar valores
-
-            #region separar o vetor em mantissa, expoente e sinal
-            bool sinalA = false;
-            bool[] expoenteA = new bool[8];
-            bool[] mantissaA = new bool[23];
-
-            bool sinalB = false;
-            bool[] expoenteB = new bool[8];
-            bool[] mantissaB = new bool[23];
-            #endregion
-
-            #region igualar o expoente
-            while (con.imprimirBinario(expoenteA) != con.imprimirBinario(expoenteB))
-            {
-                if (con.BinarioParaInteiro(expoenteB) < con.BinarioParaInteiro(expoenteA))
-                {
-                    mantissaB = ShiftLogical.shiftRightLogical(mantissaB);
-                    ula8.ULA8Bits(expoenteB, um, fazerSoma, expoenteB); //aumentar o expoente B em 1
-                }
-                else
-                {
-                    mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
-                    ula8.ULA8Bits(expoenteA, um, fazerSoma, expoenteA); //aumentar o expoente A em 1
-                }
-            }
-            #endregion
-
-            #region Fazer soma ou subtração
-            bool sinal = false;
-            bool[] resultadoSomaMantissa = new bool[23];
-            bool[] resultadoExpoente = new bool[8];
-
-            if (!f) //se falso, soma
-            {
-                if (a > 0 && b > 0)
-                {
-                    sinal = false;
-                    overSoma = ulaMantissa.Ativa(mantissaA, mantissaB, false, resultadoSomaMantissa);
-                    resultadoExpoente = expoenteA;
-                }
-            }
-            else //se verdadeiro, subtração
-            {
-
-            }
-            #endregion
-
-            #region Reunir para o vetor resultado final
-            bool[] resultadoFinal = new bool[32];
-            resultadoFinal[0] = sinal; //colocar  sinal
-
-            int posicaoExpoente = 0;
-            for (int pos = 1; pos < 9; pos++)
-            {
-                resultadoFinal[pos] = resultadoExpoente[posicaoExpoente];
-                posicaoExpoente++;
-            }
-
-            int posicaoMantissa = 0;
-            for (int pos = 9; pos < 32; pos++)
-            {
-                resultadoFinal[pos] = resultadoExpoente[posicaoMantissa];
-                posicaoMantissa++;
-            }
-            #endregion
-
-            return resultadoFinal;
-        }
-
-        private bool procuraVirgula(string numero)
-        {
-            for (int pos = 0; pos < numero.Length; pos++)
-            {
-                if (numero[pos] == ',')
-                    return true;
-            }
-
-            return false;
-        }
-        #endregion
-
-        #region Inteiro
-        private bool[] chamarULAinteiroPositivo(bool[] f, int a, int b, int tamanho)
-        {
-            Conversor converter = new Conversor();
-            bool inverteu = false, complemento2A = false, complemento2B = false;
-            bool[] A, B;
-            int resposta;
-
-            if(b>a && f[2] & !f[1] & f[0])
-            {
-                inverteu = true;
-                int aux = a;
-                a = b;
-                b = aux;
-            }
-
-            //convertendo pra complemento 2 binario
-            if (a < 0)
-            {
-                a *= -1; complemento2A = true;
-                A = converter.decimalParaComplemento2(converter.InteiroParaBinario(tamanho, a));
-            }
-            else
-            {
-                A = converter.InteiroParaBinario(tamanho, a);
-            }
-            if (b < 0)
-            {
-                b *= -1; complemento2B = true;
-                B = converter.decimalParaComplemento2(converter.InteiroParaBinario(tamanho, b));
-            }
-            else
-            {
-                B = converter.InteiroParaBinario(tamanho, b);
-            }
-
-            if (f[2] & !f[1] & f[0]) //SE SUBTRAÇÃO
-                B = converter.decimalParaComplemento2(B);
-
-
-            bool overflowSoma;
-            bool[] resultado = new bool[tamanho];
-
-            if(tamanho == 8) //8 bits
-            {
-                UnidadeLogica8bits ula = new UnidadeLogica8bits();
-                overflowSoma = ula.ULA8Bits(A, B, f, resultado);
-            }
-            else //24 bits
-            {
-                UnidadeLogica24bits ula = new UnidadeLogica24bits();
-                overflowSoma = ula.ULA24Bits(A, B, f, resultado);
-            }
-
-            //if(overflowSoma)
-            //{
-            //    MessageBox.Show("Houve overflow durante a soma", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-
-            //resultado
-            if (complemento2A || complemento2B)
-                resposta = converter.complemento2ParaDecimal(resultado);
-            else
-                resposta = converter.BinarioParaInteiro(resultado);
-
-
-            if (inverteu)
-            {
-                resposta *= -1;
-            }
-            return resultado;
         }
         #endregion
 
         #region Tela
         private void imprimirResultadoTela(bool[] binario)
         {
+            //consertar
+            //ele mostra o resultado de -3 - 3 = 6 (deveria ser negativo)
+
             Conversor con = new Conversor();
             if(binario == null)
             {
@@ -325,6 +135,7 @@ namespace Unidade_Lógica_e_Aritmética
                 {
                     textBoxResultado10.Text = Convert.ToString(con.BinarioParaInteiro(binario));
                     textBoxResultado16.Text = Convert.ToString(con.BinarioParaHexadecimal(binario));
+
                     textBoxOperando16A.Text = Convert.ToString(con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, A)));
                     textBoxOperando16B.Text = Convert.ToString(con.BinarioParaHexadecimal(con.InteiroParaBinario(binario.Length, B)));
                 }
@@ -361,6 +172,7 @@ namespace Unidade_Lógica_e_Aritmética
         }
         #endregion
 
+        #region Tudo sobre ULA
         private bool[] encaminhaULA(bool[] f, string A, string B)
         {
             bool[] resultado = null;
@@ -426,14 +238,14 @@ namespace Unidade_Lógica_e_Aritmética
                             //ula 8 bits
                             //inteiro
                             //apenas positivos
-                            resultado = chamarULAinteiroPositivo(f, a, b, 8);
+                            resultado = chamarULAinteiro(f, a, b, 8);
                         }
                         else if (a <= limite24bits && b <= limite24bits)
                         {
                             //ula 24 bits
                             //inteiro
                             //apenas positivos
-                            resultado = chamarULAinteiroPositivo(f, a, b, 24);
+                            resultado = chamarULAinteiro(f, a, b, 24);
                         }
                         else
                         {
@@ -451,14 +263,14 @@ namespace Unidade_Lógica_e_Aritmética
                             //ula 8 bits
                             //inteiro
                             //negativos e positivos
-                            resultado = chamarULAinteiroPositivo(f, a, b, 8);
+                            resultado = chamarULAinteiro(f, a, b, 8);
                         }
                         else if (a >= minimo24bits && b >= minimo24bits && a <= maximo24bits && b <= maximo24bits)
                         {
                             //ula 24 bits
                             //inteiro
                             //negativos e positivos
-                            resultado = chamarULAinteiroPositivo(f, a, b, 24);
+                            resultado = chamarULAinteiro(f, a, b, 24);
                         }
                         else
                         {
@@ -479,10 +291,187 @@ namespace Unidade_Lógica_e_Aritmética
             return resultado;
         }
 
+        #region Ponto Flutuante
+        private bool[] chamarULAPontoFlutuante(bool f, float a, float b)
+        {
+            Conversor con = new Conversor();
+            bool[] resultado = new bool[32];
+            bool[] um = { false, false, false, false, false, false, false, true };
+            UnidadeLogica8bits ula8 = new UnidadeLogica8bits();
+            UnidadeLogica32PontoFlutuante ulaMantissa = new UnidadeLogica32PontoFlutuante();
+            bool[] fazerSoma = { false, false, true };
+            bool overSoma = false;
+
+            //usar valores A = 5,375 e B = 0,625 resultado = 6,0 (IEEE 754 = 0XC0600000) Em hexadecimal usar representação em IEEE754 
+            //1 semana
+
+            //após valores convertidos 
+            //separar valores
+
+            #region separar o vetor em mantissa, expoente e sinal
+            bool sinalA = false;
+            bool[] expoenteA = new bool[8];
+            bool[] mantissaA = new bool[23];
+
+            bool sinalB = false;
+            bool[] expoenteB = new bool[8];
+            bool[] mantissaB = new bool[23];
+            #endregion
+
+            #region igualar o expoente
+            while (con.imprimirBinario(expoenteA) != con.imprimirBinario(expoenteB))
+            {
+                if (con.BinarioParaInteiro(expoenteB) < con.BinarioParaInteiro(expoenteA))
+                {
+                    mantissaB = ShiftLogical.shiftRightLogical(mantissaB);
+                    ula8.ULA8Bits(expoenteB, um, fazerSoma, expoenteB); //aumentar o expoente B em 1
+                }
+                else
+                {
+                    mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
+                    ula8.ULA8Bits(expoenteA, um, fazerSoma, expoenteA); //aumentar o expoente A em 1
+                }
+            }
+            #endregion
+
+            #region Fazer soma ou subtração
+            bool sinal = false;
+            bool[] resultadoSomaMantissa = new bool[23];
+            bool[] resultadoExpoente = new bool[8];
+
+            if (!f) //se falso, soma
+            {
+                if (a > 0 && b > 0)
+                {
+                    sinal = false;
+                    overSoma = ulaMantissa.Ativa(mantissaA, mantissaB, false, resultadoSomaMantissa);
+                    resultadoExpoente = expoenteA;
+                }
+            }
+            else //se verdadeiro, subtração
+            {
+                if (a > 0 && b > 0)
+                {
+                    sinal = false;
+                    overSoma = ulaMantissa.Ativa(mantissaA, mantissaB, false, resultadoSomaMantissa);
+                    resultadoExpoente = expoenteA;
+                }
+            }
+            #endregion
+
+            #region Reunir para o vetor resultado final
+            bool[] resultadoFinal = new bool[32];
+            resultadoFinal[0] = sinal; //colocar  sinal
+
+            int posicaoExpoente = 0;
+            for (int pos = 1; pos < 9; pos++)
+            {
+                resultadoFinal[pos] = resultadoExpoente[posicaoExpoente];
+                posicaoExpoente++;
+            }
+
+            int posicaoMantissa = 0;
+            for (int pos = 9; pos < 32; pos++)
+            {
+                resultadoFinal[pos] = resultadoExpoente[posicaoMantissa];
+                posicaoMantissa++;
+            }
+            #endregion
+
+            return resultadoFinal;
+        }
+        private bool procuraVirgula(string numero)
+        {
+            for (int pos = 0; pos < numero.Length; pos++)
+            {
+                if (numero[pos] == ',')
+                    return true;
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region Inteiro
+        private bool[] chamarULAinteiro(bool[] f, int a, int b, int tamanho)
+        {
+            Conversor converter = new Conversor();
+            bool inverteu = false, complemento2A = false, complemento2B = false;
+            bool[] A, B;
+            int resposta;
+
+            if (b > a && f[2] & !f[1] & f[0]) //caso seja soma ou subtração e b seja > a ele inverte
+            {
+                inverteu = true;
+                int aux = a;
+                a = b;
+                b = aux;
+            }
+
+            //convertendo pra complemento 2 binario
+            if (a < 0)
+            {
+                a *= -1; complemento2A = true;
+                A = converter.decimalParaComplemento2(converter.InteiroParaBinario(tamanho, a));
+            }
+            else
+            {
+                A = converter.InteiroParaBinario(tamanho, a);
+            }
+            if (b < 0)
+            {
+                b *= -1; complemento2B = true;
+                B = converter.decimalParaComplemento2(converter.InteiroParaBinario(tamanho, b));
+            }
+            else
+            {
+                B = converter.InteiroParaBinario(tamanho, b);
+            }
+
+            if (f[2] & !f[1] & f[0]) //SE SUBTRAÇÃO
+                B = converter.decimalParaComplemento2(B);
+
+
+            bool overflowSoma;
+            bool[] resultado = new bool[tamanho];
+
+            if (tamanho == 8) //8 bits
+            {
+                UnidadeLogica8bits ula = new UnidadeLogica8bits();
+                overflowSoma = ula.ULA8Bits(A, B, f, resultado);
+            }
+            else //24 bits
+            {
+                UnidadeLogica24bits ula = new UnidadeLogica24bits();
+                overflowSoma = ula.ULA24Bits(A, B, f, resultado);
+            }
+
+            //if(overflowSoma)
+            //{
+            //    MessageBox.Show("Houve overflow durante a soma", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+            //}
+
+            //resultado
+            if (complemento2A || complemento2B)
+                resposta = converter.complemento2ParaDecimal(resultado);
+            else
+                resposta = converter.BinarioParaInteiro(resultado);
+
+
+            if (inverteu)
+            {
+                resposta *= -1;
+            }
+            return resultado;
+        }
+        #endregion
+        #endregion
+
+        #region arquivo
         public void calcularArquivo()
         {
-            string path = "operandos.txt";
-            string[,] matriz = new string[100, 2];
+            string path = "operandos.txt"; 
+            string[,] matriz = new string[100, 2];  //List ou Array
             int posMatriz = 0;
 
             try
@@ -492,15 +481,13 @@ namespace Unidade_Lógica_e_Aritmética
                     string linha;
                     string[] vetor;
                     StreamReader arquivo = new StreamReader(path);
-                    
+
                     while (!arquivo.EndOfStream && posMatriz < 100)
                     {
                         linha = arquivo.ReadLine();
                         vetor = linha.Split(';');
-                        matriz[posMatriz,0] = vetor[0];
-                        Console.WriteLine(vetor[0]);
-                        matriz[posMatriz,1] = vetor[1];
-                        Console.WriteLine(vetor[1]);
+                        matriz[posMatriz, 0] = vetor[0];
+                        matriz[posMatriz, 1] = vetor[1];
                         posMatriz++;
                     }
                     arquivo.Close();
@@ -508,55 +495,49 @@ namespace Unidade_Lógica_e_Aritmética
                     StreamWriter arqui = new StreamWriter("resultado.txt");
                     Conversor conv = new Conversor();
 
-                    bool[] and = { false, false, false };
-                    bool[] or = { true, false, false };
-                    bool[] notA = { false, true, false };
-                    bool[] notB = { true, true, false };
-                    bool[] soma = { false, false, true };
-                    bool[] sub = { true, false, true };
-
+                    
                     //escrever novo arquivo
                     for (int pos = 0; pos < posMatriz; pos++)
                     {
                         arqui.WriteLine("Operando A: {0}, Operando B: {1}", matriz[pos, 0], matriz[pos, 1]);
-                        arqui.WriteLine("\nDECIMAL: ");
+                        arqui.WriteLine("\tDECIMAL: ");
                         arqui.Write("AND: ");
                         //0  0  0  A and B
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(and, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorAnd, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("OR: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(or, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorOr, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("NOT A: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(notA, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorNotA, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("NOT B: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(notB, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorNotB, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("SOMA: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(soma, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorSoma, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("SUBTRAÇÃO: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(sub, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorSubtracao, matriz[pos, 0], matriz[pos, 1])));
 
-                        arqui.WriteLine("\nHEXADECIMAL: ");
+                        arqui.WriteLine("\tHEXADECIMAL: ");
                         arqui.Write("AND: ");
-                        arqui.Write(conv.BinarioParaHexadecimal(encaminhaULA(and, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorAnd, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("OR: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(or, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorOr, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("NOT A: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(notA, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorNotA, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("NOT B: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(notB, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorNotB, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("SOMA: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(soma, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorSoma, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.Write("SUBTRAÇÃO:");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(sub, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorSubtracao, matriz[pos, 0], matriz[pos, 1])));
 
                         arqui.WriteLine();
                         arqui.WriteLine();
@@ -564,20 +545,16 @@ namespace Unidade_Lógica_e_Aritmética
                     }
                     arqui.Close();
 
-                    MessageBox.Show("Checar arquivo resultado.txt");
+                    MessageBox.Show("De acordo com o arquivo operandos.txt foi gerado um novo arquivo com os resultados chamado resultado.txt", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else { MessageBox.Show("arquivo inexistente"); }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 MessageBox.Show("Erro: " + e.Message);
             }
-            
-        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            calcularArquivo();
         }
+        #endregion
     }
 }
