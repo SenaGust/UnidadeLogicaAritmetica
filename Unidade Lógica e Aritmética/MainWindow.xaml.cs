@@ -183,7 +183,7 @@ namespace Unidade_Lógica_e_Aritmética
                 resultado = new bool[32];
                 try
                 {
-                    bool implementada = false;
+                    bool implementada = true;
 
                     if (implementada)
                     {
@@ -294,28 +294,65 @@ namespace Unidade_Lógica_e_Aritmética
         #region Ponto Flutuante
         private bool[] chamarULAPontoFlutuante(bool f, float a, float b)
         {
-            Conversor con = new Conversor();
-            bool[] resultado = new bool[32];
-            bool[] um = { false, false, false, false, false, false, false, true };
+            #region Variaveis, objetos e vetores
+            //Objetos
             UnidadeLogica8bits ula8 = new UnidadeLogica8bits();
+            UnidadeLogica24bits ula24 = new UnidadeLogica24bits();
             UnidadeLogica32PontoFlutuante ulaMantissa = new UnidadeLogica32PontoFlutuante();
-            bool[] fazerSoma = { false, false, true };
-            bool overSoma = false;
+            Conversor con = new Conversor();
 
-            //usar valores A = 5,375 e B = 0,625 resultado = 6,0 (IEEE 754 = 0XC0600000) Em hexadecimal usar representação em IEEE754 
-            //1 semana
+            //variaveis
+            int posExpoente;
+            int posMantissa;
 
-            //após valores convertidos 
-            //separar valores
+            //vetores
+            bool[] expoenteUm = { false, false, false, false, false, false, false, true };
 
-            #region separar o vetor em mantissa, expoente e sinal
-            bool sinalA = false;
-            bool[] expoenteA = new bool[8];
-            bool[] mantissaA = new bool[23];
+            //Ponto flutuante separado
+            bool[] expoenteA = new bool[8], expoenteB = new bool[8];
+            bool[] mantissaA = new bool[24], mantissaB = new bool[24];
 
-            bool sinalB = false;
-            bool[] expoenteB = new bool[8];
-            bool[] mantissaB = new bool[23];
+
+            //números convertidos
+            bool[] NumeroA = con.PontoFlutuanteParaBinario(a);
+            bool[] NumeroB = con.PontoFlutuanteParaBinario(b);
+
+            //Vetor resultado
+            bool[] resultadoFinal = new bool[32];
+            #endregion
+
+            #region Separando expoente e mantissa
+            posExpoente = 0;
+            for (int pos = 1; pos < 9; pos++)
+            {
+                expoenteA[posExpoente] = NumeroA[pos];
+                expoenteB[posExpoente] = NumeroB[pos];
+                posExpoente++;
+            }
+
+            posMantissa = 1;
+            for (int pos = 9; pos < 32; pos++)
+            {
+                mantissaA[posMantissa] = NumeroA[pos];
+                mantissaB[posMantissa] = NumeroB[pos];
+                posMantissa++;
+            }
+            #endregion
+
+            #region aparecer o bit implicito
+            mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
+            ula8.ULA8Bits(expoenteA, expoenteUm, decodificadorSoma, expoenteA); //aumentar o expoente A em 1
+            mantissaB = ShiftLogical.shiftRightLogical(mantissaB);
+            mantissaA[0] = true;
+            mantissaB[0] = true;
+            #endregion
+
+            #region Evitar erro nas operações
+            ula8.ULA8Bits(expoenteB, expoenteUm, decodificadorSoma, expoenteB); //aumentar o expoente B em 1
+            mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
+            ula8.ULA8Bits(expoenteA, expoenteUm, decodificadorSoma, expoenteA); //aumentar o expoente A em 1
+            mantissaB = ShiftLogical.shiftRightLogical(mantissaB);
+            ula8.ULA8Bits(expoenteB, expoenteUm, decodificadorSoma, expoenteB); //aumentar o expoente B em 1
             #endregion
 
             #region igualar o expoente
@@ -324,27 +361,26 @@ namespace Unidade_Lógica_e_Aritmética
                 if (con.BinarioParaInteiro(expoenteB) < con.BinarioParaInteiro(expoenteA))
                 {
                     mantissaB = ShiftLogical.shiftRightLogical(mantissaB);
-                    ula8.ULA8Bits(expoenteB, um, fazerSoma, expoenteB); //aumentar o expoente B em 1
+                    ula8.ULA8Bits(expoenteB, expoenteUm, decodificadorSoma, expoenteB); //aumentar o expoente B em 1
                 }
                 else
                 {
                     mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
-                    ula8.ULA8Bits(expoenteA, um, fazerSoma, expoenteA); //aumentar o expoente A em 1
+                    ula8.ULA8Bits(expoenteA, expoenteUm, decodificadorSoma, expoenteA); //aumentar o expoente A em 1
                 }
             }
+            
             #endregion
 
             #region Fazer soma ou subtração
-            bool sinal = false;
-            bool[] resultadoSomaMantissa = new bool[23];
+            bool[] resultadoSomaMantissa = new bool[24];
             bool[] resultadoExpoente = new bool[8];
 
             if (!f) //se falso, soma
             {
                 if (a > 0 && b > 0)
                 {
-                    sinal = false;
-                    overSoma = ulaMantissa.Ativa(mantissaA, mantissaB, false, resultadoSomaMantissa);
+                    ula24.ULA24Bits(mantissaA, mantissaB, decodificadorSoma, resultadoSomaMantissa);
                     resultadoExpoente = expoenteA;
                 }
             }
@@ -352,30 +388,88 @@ namespace Unidade_Lógica_e_Aritmética
             {
                 if (a > 0 && b > 0)
                 {
-                    sinal = false;
-                    overSoma = ulaMantissa.Ativa(mantissaA, mantissaB, false, resultadoSomaMantissa);
+                    ula24.ULA24Bits(mantissaA, con.complemento2(mantissaB), decodificadorSubtracao, resultadoSomaMantissa);
                     resultadoExpoente = expoenteA;
+
                 }
             }
             #endregion
 
-            #region Reunir para o vetor resultado final
-            bool[] resultadoFinal = new bool[32];
-            resultadoFinal[0] = sinal; //colocar  sinal
+            #region teste
+            Console.WriteLine("Teste A");
+            Console.WriteLine(con.imprimirBinario(mantissaA));
 
-            int posicaoExpoente = 0;
+            Console.WriteLine("Teste B");
+            Console.WriteLine(con.imprimirBinario(mantissaB));
+
+            Console.WriteLine("Resultado resultadoSomaMantissa");
+            Console.WriteLine(con.imprimirBinario(resultadoSomaMantissa));
+            Console.WriteLine();
+            Console.WriteLine();
+            #endregion
+
+            #region Reunir para o vetor resultado final
+            posExpoente = 0;
             for (int pos = 1; pos < 9; pos++)
             {
-                resultadoFinal[pos] = resultadoExpoente[posicaoExpoente];
-                posicaoExpoente++;
+                resultadoFinal[pos] = resultadoExpoente[posExpoente];
+                posExpoente++;
             }
 
-            int posicaoMantissa = 0;
+
+            posMantissa = 0;
+            resultadoSomaMantissa[1] = true;
             for (int pos = 9; pos < 32; pos++)
             {
-                resultadoFinal[pos] = resultadoExpoente[posicaoMantissa];
-                posicaoMantissa++;
+                resultadoFinal[pos] = resultadoSomaMantissa[posMantissa];
+                posMantissa++;
             }
+            #endregion
+
+            textBoxResultado10.Text = con.BinarioParaPontoFlutuante(resultadoFinal) + " ";
+            textBoxOperando16A.Text = con.BinarioParaPontoFlutuante(NumeroA) + " ";
+            textBoxOperando16B.Text = con.BinarioParaPontoFlutuante(NumeroB) + " ";
+
+            #region teste
+            Console.WriteLine("Teste A");
+            for (int g = 0; g < NumeroA.Length; g++)
+            {
+                if (NumeroA[g])
+                    Console.Write("1 ");
+                else
+                    Console.Write("0 ");
+
+                if (g == 0 || g == 8)
+                    Console.Write("- ");
+            }
+            Console.WriteLine();
+            
+
+            Console.WriteLine("Teste B");
+            for (int g = 0; g < NumeroB.Length; g++)
+            {
+                if (NumeroB[g])
+                    Console.Write("1 ");
+                else
+                    Console.Write("0 ");
+
+                if (g == 0 || g == 8)
+                    Console.Write("- ");
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Resultado");
+            for (int g = 0; g < resultadoFinal.Length; g++)
+            {
+                if (resultadoFinal[g])
+                    Console.Write("1 ");
+                else
+                    Console.Write("0 ");
+
+                if (g == 0 || g == 8)
+                    Console.Write("- ");
+            }
+            Console.WriteLine();
             #endregion
 
             return resultadoFinal;
@@ -412,7 +506,7 @@ namespace Unidade_Lógica_e_Aritmética
             if (a < 0)
             {
                 a *= -1; complemento2A = true;
-                A = converter.decimalParaComplemento2(converter.InteiroParaBinario(tamanho, a));
+                A = converter.complemento2(converter.InteiroParaBinario(tamanho, a));
             }
             else
             {
@@ -421,7 +515,7 @@ namespace Unidade_Lógica_e_Aritmética
             if (b < 0)
             {
                 b *= -1; complemento2B = true;
-                B = converter.decimalParaComplemento2(converter.InteiroParaBinario(tamanho, b));
+                B = converter.complemento2(converter.InteiroParaBinario(tamanho, b));
             }
             else
             {
@@ -429,7 +523,7 @@ namespace Unidade_Lógica_e_Aritmética
             }
 
             if (f[2] & !f[1] & f[0]) //SE SUBTRAÇÃO
-                B = converter.decimalParaComplemento2(B);
+                B = converter.complemento2(B);
 
 
             bool overflowSoma;

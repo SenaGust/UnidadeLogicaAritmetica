@@ -45,8 +45,8 @@ namespace Unidade_Lógica_e_Aritmética
         {
             bool vai1, vem1 = false;
 
-            resultado[32] = ALU32.ULA1Bit(A[32], B[32], F, vem1, out vai1);
-            vem1 = vai1;
+
+            
             resultado[31] = ALU31.ULA1Bit(A[31], B[31], F, vem1, out vai1);
             resultado[30] = ALU30.ULA1Bit(A[30], B[30], F, vem1, out vai1);
             resultado[29] = ALU29.ULA1Bit(A[29], B[29], F, vem1, out vai1);

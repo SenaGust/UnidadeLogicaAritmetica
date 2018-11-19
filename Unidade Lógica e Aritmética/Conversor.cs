@@ -41,7 +41,7 @@ namespace Unidade_Lógica_e_Aritmética
         #endregion
 
         #region Negativos
-        public bool[] decimalParaComplemento2(bool[] bin)
+        public bool[] complemento2(bool[] bin)
         {
             bool[] resultado = new bool[bin.Length];
             bool[] f = new bool[3];
@@ -163,10 +163,46 @@ namespace Unidade_Lógica_e_Aritmética
         #endregion
 
         #region Ponto Flutuante
+        public float BinarioParaPontoFlutuante(bool[] vet32)
+        {
+            float mantissaB10 = 0, total;
+            int numExpoente = 0, numSinal = 0, potencia = 0;
+
+            // Converte o expoente binário para decimal
+            for (int i = 8; i > 0; i--)
+            {
+                if (vet32[i])
+                    numExpoente += Convert.ToInt32(Math.Pow(2, potencia));
+                potencia++;
+            }
+
+            potencia = 1;
+            // Converte a mantissa binário para decimal
+            for (int j = 9; j < vet32.Length; j++)
+            {
+                //float pt = Convert.ToSingle(2 ^ (j - 1));
+
+                if (vet32[j])
+                    mantissaB10 += Convert.ToSingle(Math.Pow(2, (potencia * -1)));
+
+                potencia++;
+            }
+
+            // testa o sinal (negativo ou positivo)
+            if (vet32[0])
+                numSinal = 1;
+
+            float sinal = Convert.ToSingle(Math.Pow(-1, numSinal));
+            float expoente = Convert.ToSingle(Math.Pow(2, (numExpoente - 127)));
+            total = (sinal * (1 + mantissaB10) * expoente);
+            
+            return total;
+        }
         public bool[] PontoFlutuanteParaBinario(float numero)
         {
-            //numero = 10f; // Apagar*********
+            // Apagar*********
 
+            //Console.WriteLine(numero);
             // determina quantos digitos compõe a parte fracionária do número
             string numCompleto = numero.ToString(), resultInt = null, resultFracion = null, resultado = null;
             string[] numDec = numCompleto.Split(',');
@@ -188,7 +224,7 @@ namespace Unidade_Lógica_e_Aritmética
                 partedecimal = Convert.ToSingle(Math.Round(numero - Convert.ToSingle(Math.Truncate(numero)), quant_Frac) * -1); // determina a parte fracionária
             }
 
-            Console.WriteLine(partedecimal); Console.ReadKey();
+            Console.WriteLine(partedecimal);
 
             // Conversão da parte inteira (base 10 -> base 2)
             while (parteInteira > 0)
@@ -205,7 +241,7 @@ namespace Unidade_Lógica_e_Aritmética
             // testa se os digitos fracionarios atingiram zero, ou
             // se a dizma nao ultrapassou 23 bits, ou
             // se a parte fracionaria nao eh uma dizma periodica
-            while (digitoInt != 0 && erroDizma.Count < (23 - resultInt.Length) && !atingiuDizma)
+            while (digitoInt != 0 && erroDizma.Count < (24 - resultInt.Length) && !atingiuDizma)
             {
                 numCompleto = (partedecimal * 2).ToString(); // armazena a parte fracionária * 2, no atributo tipo string numCompleto               
                 numDec = numCompleto.Split(','); // separa a parte inteira e fracionária
@@ -232,12 +268,12 @@ namespace Unidade_Lógica_e_Aritmética
                 digitoInt = partedecimal; // será testado pelo while se a parte fracionária ainda não chegou a zero             
             }
 
-            resultado = resultInt + resultFracion; // numero binário com parte inteira e fracionária
+            resultado = resultInt.Remove(0, 1) + resultFracion; // numero binário com parte inteira e fracionária            
 
             // determina o valor do expoente baseado em quantas 'casas' a vírgula vai ter que andar para normalizar a mantissa
             // soma 127
             // e subtrai a quantidade de cases que foram "percorridas" para esquerda
-            int expoente = (resultInt.Length + 127) - (23 - resultado.Length);
+            int expoente = (resultInt.Length + 126); // 127 - 1 (bit implicito)
 
             bool[] mantissa32 = new bool[32]; // cria o vetor para armazenar a mantissa de 32 bits
 
@@ -267,17 +303,19 @@ namespace Unidade_Lógica_e_Aritmética
                 else
                     mantissa32[x + 9] = false;
             }
-
-            Console.WriteLine("parte int: " + resultInt);
-            Console.WriteLine("parte fracionária: " + resultFracion);
-            Console.WriteLine("resultado: " + resultado);
-            Console.WriteLine("expoente (int): " + expoente);
-
-            for (int f = 0; f < expoente8bits.Length; f++)
-                Console.WriteLine("expoente8bits[{0}] = {1}", f, expoente8bits[f]);
-
+        
+            Console.WriteLine("Mantissa32:" + numero);
             for (int g = 0; g < mantissa32.Length; g++)
-                Console.WriteLine("mantissa32[{0}] = {1}", g, mantissa32[g]);
+            {
+                if (mantissa32[g])
+                    Console.Write("1 ");
+                else
+                    Console.Write("0 ");
+
+                if (g == 0 || g == 8)
+                    Console.Write("- ");
+            }
+            Console.WriteLine();
 
             return mantissa32;
         }
