@@ -470,81 +470,73 @@ namespace Unidade_Lógica_e_Aritmética
         #region arquivo
         public void calcularArquivo()
         {
-            string path = "operandos.txt"; 
-            string[,] matriz = new string[100, 2];  //List ou Array
-            int posMatriz = 0;
+            string path = "operandos.txt";
+            string OperandoA, OperandoB;
 
             try
             {
                 if (File.Exists(path))
                 {
-                    string linha;
-                    string[] vetor;
-                    StreamReader arquivo = new StreamReader(path);
+                    string[] linha;
+                    StreamReader arquivo = new StreamReader(path); //Stream de leitura do arquivo contendo os operandos
+                    StreamWriter arqui = new StreamWriter("resultado.txt"); //Stream de escrita do arquivo com os resultados das operações com os operandos
 
-                    while (!arquivo.EndOfStream && posMatriz < 100)
-                    {
-                        linha = arquivo.ReadLine();
-                        vetor = linha.Split(';');
-                        matriz[posMatriz, 0] = vetor[0];
-                        matriz[posMatriz, 1] = vetor[1];
-                        posMatriz++;
-                    }
-                    arquivo.Close();
-
-                    StreamWriter arqui = new StreamWriter("resultado.txt");
                     Conversor conv = new Conversor();
 
-                    
                     //escrever novo arquivo
-                    for (int pos = 0; pos < posMatriz; pos++)
+                    for (int pos = 0; !arquivo.EndOfStream; pos++)
                     {
-                        arqui.WriteLine("Operando A: {0}, Operando B: {1}", matriz[pos, 0], matriz[pos, 1]);
+                        linha = arquivo.ReadLine().Split(';'); //Lê uma linha do arquivo e separa pelo separador ';' no vetor linha
+                        OperandoA = linha[0]; //atribui a primeira posição do vetor linha
+                        OperandoB = linha[1]; ////atribui a segunda posição do vetor linha
+
+                        //Executa os cálculos e salva os resultados no arquivo "resultado.txt"
+                        arqui.WriteLine("Operando A: {0}, Operando B: {1}", OperandoA, OperandoB);
                         arqui.WriteLine("\tDECIMAL: ");
                         arqui.Write("AND: ");
-                        //0  0  0  A and B
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorAnd, matriz[pos, 0], matriz[pos, 1])));
+                        //0  0  0  A and B                        
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorAnd, OperandoA, OperandoB)));
 
                         arqui.Write("OR: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorOr, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorOr, OperandoA, OperandoB)));
 
                         arqui.Write("NOT A: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorNotA, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorNotA, OperandoA, OperandoB)));
 
                         arqui.Write("NOT B: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorNotB, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorNotB, OperandoA, OperandoB)));
 
                         arqui.Write("SOMA: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorSoma, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorSoma, OperandoA, OperandoB)));
 
                         arqui.Write("SUBTRAÇÃO: ");
-                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorSubtracao, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorSubtracao, OperandoA, OperandoB)));
 
                         arqui.WriteLine("\tHEXADECIMAL: ");
                         arqui.Write("AND: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorAnd, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorAnd, OperandoA, OperandoB)));
 
                         arqui.Write("OR: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorOr, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorOr, OperandoA, OperandoB)));
 
                         arqui.Write("NOT A: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorNotA, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorNotA, OperandoA, OperandoB)));
 
                         arqui.Write("NOT B: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorNotB, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorNotB, OperandoA, OperandoB)));
 
                         arqui.Write("SOMA: ");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorSoma, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorSoma, OperandoA, OperandoB)));
 
                         arqui.Write("SUBTRAÇÃO:");
-                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorSubtracao, matriz[pos, 0], matriz[pos, 1])));
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorSubtracao, OperandoA, OperandoB)));
 
                         arqui.WriteLine();
                         arqui.WriteLine();
                         arqui.WriteLine();
                     }
                     arqui.Close();
-
+                    arquivo.Close();
                     MessageBox.Show("De acordo com o arquivo operandos.txt foi gerado um novo arquivo com os resultados chamado resultado.txt", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else { MessageBox.Show("arquivo inexistente"); }
@@ -553,7 +545,6 @@ namespace Unidade_Lógica_e_Aritmética
             {
                 MessageBox.Show("Erro: " + e.Message);
             }
-
         }
         #endregion
     }
