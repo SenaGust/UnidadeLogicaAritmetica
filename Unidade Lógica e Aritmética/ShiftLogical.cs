@@ -27,7 +27,7 @@ namespace Unidade_Lógica_e_Aritmética
             
             for (int pos = 1; pos < resposta.Length; pos++)
             {
-                resposta[pos] = bin[pos];
+                resposta[pos] = bin[pos - 1];
             }
             return resposta;
         }

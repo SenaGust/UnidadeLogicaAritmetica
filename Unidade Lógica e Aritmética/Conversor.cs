@@ -77,8 +77,8 @@ namespace Unidade_Lógica_e_Aritmética
         }
         public int complemento2ParaDecimal(bool[] bin)
         {
-            double soma = 0; 
-            
+            double soma = 0;
+
             if (bin[0]) //se bin[0] for false, a formula dá 0
                 soma = Math.Pow(-2, bin.Length - 1);
 
@@ -177,6 +177,7 @@ namespace Unidade_Lógica_e_Aritmética
             }
 
             potencia = 1;
+
             // Converte a mantissa binário para decimal
             for (int j = 9; j < vet32.Length; j++)
             {
@@ -194,15 +195,26 @@ namespace Unidade_Lógica_e_Aritmética
 
             float sinal = Convert.ToSingle(Math.Pow(-1, numSinal));
             float expoente = Convert.ToSingle(Math.Pow(2, (numExpoente - 127)));
-            total = (sinal * (1 + mantissaB10) * expoente);
-            
+            total = (sinal * (1.0f + mantissaB10) * expoente);
+
+            //Console.WriteLine("\nTOTAL == " + total);
+
+            //Console.WriteLine("Mantissa32:");
+            //for (int g = 0; g < vet32.Length; g++)
+            //{
+            //    if (vet32[g])
+            //        Console.Write("1 ");
+            //    else
+            //        Console.Write("0 ");
+
+            //    if (g == 0 || g == 8)
+            //        Console.Write("- ");
+            //}
+
             return total;
         }
         public bool[] PontoFlutuanteParaBinario(float numero)
         {
-            // Apagar*********
-
-            //Console.WriteLine(numero);
             // determina quantos digitos compõe a parte fracionária do número
             string numCompleto = numero.ToString(), resultInt = null, resultFracion = null, resultado = null;
             string[] numDec = numCompleto.Split(',');
@@ -224,7 +236,7 @@ namespace Unidade_Lógica_e_Aritmética
                 partedecimal = Convert.ToSingle(Math.Round(numero - Convert.ToSingle(Math.Truncate(numero)), quant_Frac) * -1); // determina a parte fracionária
             }
 
-            Console.WriteLine(partedecimal);
+            //Console.WriteLine(partedecimal);
 
             // Conversão da parte inteira (base 10 -> base 2)
             while (parteInteira > 0)
@@ -236,28 +248,27 @@ namespace Unidade_Lógica_e_Aritmética
 
             // Conversão da parte fracionária (base 10 -> base 2)
             List<string> erroDizma = new List<string>();
-            bool atingiuDizma = false;
+            //bool atingiuDizma = false;
 
             // testa se os digitos fracionarios atingiram zero, ou
             // se a dizma nao ultrapassou 23 bits, ou
             // se a parte fracionaria nao eh uma dizma periodica
-            while (digitoInt != 0 && erroDizma.Count < (24 - resultInt.Length) && !atingiuDizma)
+            while (digitoInt != 0 && erroDizma.Count < (24 - resultInt.Length) /*&& !atingiuDizma */)
             {
                 numCompleto = (partedecimal * 2).ToString(); // armazena a parte fracionária * 2, no atributo tipo string numCompleto               
                 numDec = numCompleto.Split(','); // separa a parte inteira e fracionária
 
                 if (numDec.Length > 1)
                 {
-                    // testa se a parte fracionária do número encontrado pela multiplicação da partedecimal * 2 já não foi encontrado anteriormente
-                    foreach (string num in erroDizma)
-                    {
-                        if (numDec[1] == num)
-                            atingiuDizma = true;
-                    }
+                    //    // testa se a parte fracionária do número encontrado pela multiplicação da partedecimal * 2 já não foi encontrado anteriormente
+                    //    foreach (string num in erroDizma)
+                    //    {
+                    //        if (numDec[1] == num)
+                    //            atingiuDizma = true;
+
 
                     erroDizma.Add(numDec[1]); // adiciona os resultados fracionários a lista com o intuito de detectar uma futura dizma periódica
                 }
-
                 resultFracion += numDec[0]; // armazena o resultado em binario no atributo tipo string resultDecimal                
 
                 if (Convert.ToSingle(numDec[0]) != 0) // se a parte inteira for diferente de zero, o valor da próxima multiplicação tem -1 subtraído
@@ -303,19 +314,27 @@ namespace Unidade_Lógica_e_Aritmética
                 else
                     mantissa32[x + 9] = false;
             }
-        
-            Console.WriteLine("Mantissa32:" + numero);
-            for (int g = 0; g < mantissa32.Length; g++)
-            {
-                if (mantissa32[g])
-                    Console.Write("1 ");
-                else
-                    Console.Write("0 ");
 
-                if (g == 0 || g == 8)
-                    Console.Write("- ");
-            }
-            Console.WriteLine();
+            //Console.WriteLine("parte int: " + resultInt);
+            //Console.WriteLine("parte fracionária: " + resultFracion);
+            //Console.WriteLine("resultado: " + resultado);
+            //Console.WriteLine("expoente (int): " + expoente);
+
+            //for (int f = 0; f < expoente8bits.Length; f++)
+            //    Console.WriteLine("expoente8bits[{0}] = {1}", f, expoente8bits[f]);
+
+            //Console.WriteLine("Mantissa32:");
+            //for (int g = 0; g < mantissa32.Length; g++)
+            //{
+            //    if (mantissa32[g])
+            //        Console.Write("1 ");
+            //    else
+            //        Console.Write("0 ");
+
+            //    if (g == 0 || g == 8)
+            //        Console.Write("- ");
+            //}
+
 
             return mantissa32;
         }
