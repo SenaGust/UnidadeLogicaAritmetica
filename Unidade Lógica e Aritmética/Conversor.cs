@@ -315,27 +315,6 @@ namespace Unidade_Lógica_e_Aritmética
                     mantissa32[x + 9] = false;
             }
 
-            //Console.WriteLine("parte int: " + resultInt);
-            //Console.WriteLine("parte fracionária: " + resultFracion);
-            //Console.WriteLine("resultado: " + resultado);
-            //Console.WriteLine("expoente (int): " + expoente);
-
-            //for (int f = 0; f < expoente8bits.Length; f++)
-            //    Console.WriteLine("expoente8bits[{0}] = {1}", f, expoente8bits[f]);
-
-            //Console.WriteLine("Mantissa32:");
-            //for (int g = 0; g < mantissa32.Length; g++)
-            //{
-            //    if (mantissa32[g])
-            //        Console.Write("1 ");
-            //    else
-            //        Console.Write("0 ");
-
-            //    if (g == 0 || g == 8)
-            //        Console.Write("- ");
-            //}
-
-
             return mantissa32;
         }
         #endregion
