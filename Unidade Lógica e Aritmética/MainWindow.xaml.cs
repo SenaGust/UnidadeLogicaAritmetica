@@ -36,8 +36,8 @@ namespace Unidade_Lógica_e_Aritmética
         // 0  1  1  Not B
         // 1  0  0  A + B
         // 1  0  1  A - B
-        // 1  1  0    -
-        // 1  1  1    -
+        // 1  1  0    -   (A + B): float
+        // 1  1  1    -   (A - B): float
 
         bool[] decodificadorAnd = { false, false, false };
         bool[] decodificadorOr = { true, false, false };
@@ -106,6 +106,7 @@ namespace Unidade_Lógica_e_Aritmética
         }
         private void buttonLimpar_Click(object sender, RoutedEventArgs e)
         {
+            calcularArquivo();
             //Botão limpar
             textBoxOperando1.Clear();
             textBoxOperando2.Clear();
@@ -120,7 +121,7 @@ namespace Unidade_Lógica_e_Aritmética
             //botão fechar
             string programadores = "Integrantes: ";
             programadores += "\n\tGustavo Sena";
-            programadores += "\n\tJoão Víctor Soares";
+            programadores += "\n\tJoão Vítor Soares";
             programadores += "\n\tLorena Aguilar";
             programadores += "\n\tNathan Ribeiro";
             MessageBox.Show(programadores, "Programadores", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -361,12 +362,12 @@ namespace Unidade_Lógica_e_Aritmética
             mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
             ula8.ULA8Bits(expoenteA, expoenteUm, decodificadorSoma, expoenteA); //aumentar o expoente A em 1
             mantissaB = ShiftLogical.shiftRightLogical(mantissaB);
+            ula8.ULA8Bits(expoenteB, expoenteUm, decodificadorSoma, expoenteB); //aumentar o expoente B em 1
             mantissaA[0] = true;
             mantissaB[0] = true;
             #endregion
 
-            #region Evitar erro nas operações
-            ula8.ULA8Bits(expoenteB, expoenteUm, decodificadorSoma, expoenteB); //aumentar o expoente B em 1
+            #region Evitar erro nas operações // qual erro? overflow?        
             mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
             ula8.ULA8Bits(expoenteA, expoenteUm, decodificadorSoma, expoenteA); //aumentar o expoente A em 1
             mantissaB = ShiftLogical.shiftRightLogical(mantissaB);
@@ -478,73 +479,85 @@ namespace Unidade_Lógica_e_Aritmética
             string path = "operandos.txt";
             string OperandoA, OperandoB;
 
+            //Tabela inteiro
+            // F2 F1 F0 Saída
+            // 0  0  0  A and B
+            // 0  0  1  A or B
+            // 0  1  0  Not A
+            // 0  1  1  Not B
+            // 1  0  0  A + B
+            // 1  0  1  A - B
+            // 1  1  0    -
+            // 1  1  1    -
+
             try
             {
-                //if (File.Exists(path))
-                //{
-                //    string[] linha;
-                //    StreamReader arquivo = new StreamReader(path); //Stream de leitura do arquivo contendo os operandos
-                //    StreamWriter arqui = new StreamWriter("resultado.txt"); //Stream de escrita do arquivo com os resultados das operações com os operandos
+                if (File.Exists(path))
+                {
+                    string[] linha;
+                    StreamReader arquivo = new StreamReader(path); //Stream de leitura do arquivo contendo os operandos
 
-                //    Conversor conv = new Conversor();
+                    StreamWriter arqui = new StreamWriter("resultado.txt"); //Stream de escrita do arquivo com os resultados das operações com os operandos
 
-                //    //escrever novo arquivo
-                //    for (int pos = 0; !arquivo.EndOfStream; pos++)
-                //    {
-                //        linha = arquivo.ReadLine().Split(';'); //Lê uma linha do arquivo e separa pelo separador ';' no vetor linha
-                //        OperandoA = linha[0]; //atribui a primeira posição do vetor linha
-                //        OperandoB = linha[1]; ////atribui a segunda posição do vetor linha
+                    Conversor conv = new Conversor();
 
-                //        //Executa os cálculos e salva os resultados no arquivo "resultado.txt"
-                //        arqui.WriteLine("Operando A: {0}, Operando B: {1}", OperandoA, OperandoB);
-                //        arqui.WriteLine("\tDECIMAL: ");
-                //        arqui.Write("AND: ");
-                //        //0  0  0  A and B                        
-                //        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorAnd, OperandoA, OperandoB)));
+                    //escrever novo arquivo
+                    for (int pos = 0; !arquivo.EndOfStream; pos++)
+                    {
+                        linha = arquivo.ReadLine().Split(';'); //Lê uma linha do arquivo e separa pelo separador ';' no vetor linha
+                        OperandoA = linha[0]; //atribui a primeira posição do vetor linha
+                        OperandoB = linha[1]; ////atribui a segunda posição do vetor linha
 
-                //        arqui.Write("OR: ");
-                //        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorOr, OperandoA, OperandoB)));
+                        //Executa os cálculos e salva os resultados no arquivo "resultado.txt"
+                        arqui.WriteLine("Operando A: {0}, Operando B: {1}", OperandoA, OperandoB);
+                        arqui.WriteLine("\tDECIMAL: ");
+                        arqui.Write("AND: ");
+                        //0  0  0  A and B                        
+                        arqui.WriteLine((encaminhaULA(decodificadorAnd, OperandoA, OperandoB)));
 
-                //        arqui.Write("NOT A: ");
-                //        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorNotA, OperandoA, OperandoB)));
+                        arqui.Write("OR: ");
+                        arqui.WriteLine((encaminhaULA(decodificadorOr, OperandoA, OperandoB)));
 
-                //        arqui.Write("NOT B: ");
-                //        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorNotB, OperandoA, OperandoB)));
+                        arqui.Write("NOT A: ");
+                        arqui.WriteLine((encaminhaULA(decodificadorNotA, OperandoA, OperandoB)));
 
-                //        arqui.Write("SOMA: ");
-                //        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorSoma, OperandoA, OperandoB)));
+                        arqui.Write("NOT B: ");
+                        arqui.WriteLine((encaminhaULA(decodificadorNotB, OperandoA, OperandoB)));
 
-                //        arqui.Write("SUBTRAÇÃO: ");
-                //        arqui.WriteLine(conv.BinarioParaInteiro(encaminhaULA(decodificadorSubtracao, OperandoA, OperandoB)));
+                        arqui.Write("SOMA: ");
+                        arqui.WriteLine((encaminhaULA(decodificadorSoma, OperandoA, OperandoB)));
 
-                //        arqui.WriteLine("\tHEXADECIMAL: ");
-                //        arqui.Write("AND: ");
-                //        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorAnd, OperandoA, OperandoB)));
+                        arqui.Write("SUBTRAÇÃO: ");
+                        arqui.WriteLine((encaminhaULA(decodificadorSubtracao, OperandoA, OperandoB)));
 
-                //        arqui.Write("OR: ");
-                //        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorOr, OperandoA, OperandoB)));
+                        arqui.WriteLine("\tHEXADECIMAL: ");
+                        arqui.Write("AND: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(conv.PontoFlutuanteParaBinario(encaminhaULA(decodificadorAnd, OperandoA, OperandoB))));
 
-                //        arqui.Write("NOT A: ");
-                //        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorNotA, OperandoA, OperandoB)));
+                        arqui.Write("OR: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(conv.PontoFlutuanteParaBinario(encaminhaULA(decodificadorOr, OperandoA, OperandoB))));
 
-                //        arqui.Write("NOT B: ");
-                //        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorNotB, OperandoA, OperandoB)));
+                        arqui.Write("NOT A: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(conv.PontoFlutuanteParaBinario(encaminhaULA(decodificadorNotA, OperandoA, OperandoB))));
 
-                //        arqui.Write("SOMA: ");
-                //        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorSoma, OperandoA, OperandoB)));
+                        arqui.Write("NOT B: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(conv.PontoFlutuanteParaBinario(encaminhaULA(decodificadorNotB, OperandoA, OperandoB))));
 
-                //        arqui.Write("SUBTRAÇÃO:");
-                //        arqui.WriteLine(conv.BinarioParaHexadecimal(encaminhaULA(decodificadorSubtracao, OperandoA, OperandoB)));
+                        arqui.Write("SOMA: ");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(conv.PontoFlutuanteParaBinario(encaminhaULA(decodificadorSoma, OperandoA, OperandoB))));
 
-                //        arqui.WriteLine();
-                //        arqui.WriteLine();
-                //        arqui.WriteLine();
-                //    }
-                //    arqui.Close();
-                //    arquivo.Close();
-                //    MessageBox.Show("De acordo com o arquivo operandos.txt foi gerado um novo arquivo com os resultados chamado resultado.txt", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
-                //}
-                //else { MessageBox.Show("arquivo inexistente"); }
+                        arqui.Write("SUBTRAÇÃO:");
+                        arqui.WriteLine(conv.BinarioParaHexadecimal(conv.PontoFlutuanteParaBinario(encaminhaULA(decodificadorSubtracao, OperandoA, OperandoB))));
+
+                        arqui.WriteLine();
+                        arqui.WriteLine();
+                        arqui.WriteLine();
+                    }
+                    arqui.Close();
+                    arquivo.Close();
+                    MessageBox.Show("De acordo com o arquivo operandos.txt foi gerado um novo arquivo com os resultados chamado resultado.txt", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else { MessageBox.Show("arquivo inexistente"); }
             }
             catch (Exception e)
             {
