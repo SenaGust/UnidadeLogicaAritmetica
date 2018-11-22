@@ -106,7 +106,6 @@ namespace Unidade_Lógica_e_Aritmética
         }
         private void buttonLimpar_Click(object sender, RoutedEventArgs e)
         {
-            calcularArquivo();
             //Botão limpar
             textBoxOperando1.Clear();
             textBoxOperando2.Clear();
