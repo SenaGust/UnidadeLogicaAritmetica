@@ -224,6 +224,8 @@ namespace Unidade_Lógica_e_Aritmética
 
             if (numDec.Length > 1)
                 quant_Frac = numDec[1].Length;
+            else
+                quant_Frac = 0;
 
             if (numero >= 0)
             {
@@ -239,12 +241,13 @@ namespace Unidade_Lógica_e_Aritmética
             //Console.WriteLine(partedecimal);
 
             // Conversão da parte inteira (base 10 -> base 2)
-            while (parteInteira > 0)
+            do
             {
                 resto = parteInteira % 2;
                 parteInteira /= 2;
                 resultInt = resto.ToString() + resultInt;
             }
+            while (parteInteira != 0);
 
             // Conversão da parte fracionária (base 10 -> base 2)
             List<string> erroDizma = new List<string>();
@@ -267,7 +270,7 @@ namespace Unidade_Lógica_e_Aritmética
                     //            atingiuDizma = true;
 
 
-                    erroDizma.Add(numDec[1]); // adiciona os resultados fracionários a lista com o intuito de detectar uma futura dizma periódica
+                    erroDizma.Add(numDec[1]); // adiciona os resultados fracionários a lista com o intuito de detectar uma futura dizma 
                 }
                 resultFracion += numDec[0]; // armazena o resultado em binario no atributo tipo string resultDecimal                
 
