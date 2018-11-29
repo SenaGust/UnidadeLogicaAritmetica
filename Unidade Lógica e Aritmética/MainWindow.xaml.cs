@@ -501,8 +501,10 @@ namespace Unidade_Lógica_e_Aritmética
             #endregion
 
             #region Separando expoente e mantissa
-            posExpoente = 0;
             sinalA = NumeroA[0];
+            sinalB = NumeroB[0];
+
+            posExpoente = 0;
             for (int pos = 1; pos < 9; pos++)
             {
                 expoenteA[posExpoente] = NumeroA[pos];
@@ -511,7 +513,6 @@ namespace Unidade_Lógica_e_Aritmética
             }
 
             posMantissa = 0;
-            sinalB = NumeroB[0];
             for (int pos = 9; pos < 32; pos++)
             {
                 mantissaA[posMantissa] = NumeroA[pos];
@@ -528,6 +529,15 @@ namespace Unidade_Lógica_e_Aritmética
 
             else
             {
+                Console.WriteLine("antes alterar expoente e mantissa");
+                Console.Write(con.imprimirBinario(expoenteB) + " - ");
+                Console.WriteLine(con.imprimirBinario(mantissaB));
+
+                Console.Write(con.imprimirBinario(expoenteA) + " - ");
+                Console.WriteLine(con.imprimirBinario(mantissaA));
+
+                Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++");
+
                 #region aparecer o bit implicito
                 mantissaA = ShiftLogical.shiftRightLogical(mantissaA);
                 ula8.ULA8Bits(expoenteA, expoenteUm, decodificadorSoma, expoenteA); //aumentar o expoente A em 1
@@ -565,12 +575,12 @@ namespace Unidade_Lógica_e_Aritmética
                 }
                 #endregion
 
-                //Console.WriteLine("antes soma");
-                //Console.Write(con.imprimirBinario(expoenteB) + " - ");
-                //Console.WriteLine(con.imprimirBinario(mantissaB));
+                Console.WriteLine("antes soma");
+                Console.Write(con.imprimirBinario(expoenteB) + " - ");
+                Console.WriteLine(con.imprimirBinario(mantissaB));
 
-                //Console.Write(con.imprimirBinario(expoenteA) + " - ");
-                //Console.WriteLine(con.imprimirBinario(mantissaA));
+                Console.Write(con.imprimirBinario(expoenteA) + " - ");
+                Console.WriteLine(con.imprimirBinario(mantissaA));
 
                 #region tratando o sinal
                 //feito de forma didatica
@@ -583,7 +593,6 @@ namespace Unidade_Lógica_e_Aritmética
                         {
                             // +a - (+b)
                             mantissaB = con.complemento2(mantissaB);
-                            complemento2B = true;
                         }
                         else
                         {//deu errado
@@ -604,7 +613,6 @@ namespace Unidade_Lógica_e_Aritmética
                         {
                             // -a - (-b) = -a + b
                             mantissaA = con.complemento2(mantissaA);
-                            complemento2A = true;
                         }
                     }
                 }
@@ -623,7 +631,8 @@ namespace Unidade_Lógica_e_Aritmética
                             //+a + (-b) = a - b 
                             //fazer complemento2 no B
                             mantissaB = con.complemento2(mantissaB);
-                            complemento2B = true;
+
+                            Console.WriteLine(con.imprimirBinario(mantissaB));
                         }
                     }
                     else
@@ -632,18 +641,18 @@ namespace Unidade_Lógica_e_Aritmética
                         {
                             //-a + (+b) = +b + (-a) = b - a
                             //fazer complemento2 no A, foi tratado por causa do inverteu
+                            Console.WriteLine("++++++++++++++++++++++++++++++++++++");
+                            Console.WriteLine("ERRO DE MERDA");
+                            Console.Write(con.imprimirBinario(expoenteB) + " - ");
                             mantissaA = con.complemento2(mantissaA);
-                            complemento2A = true;
                         }
                         else //funciona
                         {
                             //-a + (-b) = -a - b
                             //somar e dizer que inverteu
-                            inverteu = true;
                         }
                     }
                 }
-
                 #endregion
 
                 #region Fazer soma ou subtração
@@ -663,10 +672,10 @@ namespace Unidade_Lógica_e_Aritmética
                 }
                 #endregion
 
-                //Console.WriteLine("++++++++++++++++++++++++++++++++++++");
-                //Console.WriteLine("antes normalizar");
-                //Console.Write(con.imprimirBinario(resultadoExpoente) + " - ");
-                //Console.WriteLine(con.imprimirBinario(resultadoSomaMantissa));
+                Console.WriteLine("++++++++++++++++++++++++++++++++++++");
+                Console.WriteLine("antes normalizar");
+                Console.Write(con.imprimirBinario(resultadoExpoente) + " - ");
+                Console.WriteLine(con.imprimirBinario(resultadoSomaMantissa));
 
                 #region normalizar
                 bool repetir = true;
@@ -683,6 +692,11 @@ namespace Unidade_Lógica_e_Aritmética
                 resultadoSomaMantissa = ShiftLogical.shiftLeftLogical(resultadoSomaMantissa);
                 ula8.ULA8Bits(resultadoExpoente, con.complemento2(expoenteUm), decodificadorSubtracao, resultadoExpoente); //aumentar o expoente A em 1
                 #endregion
+
+                Console.WriteLine("++++++++++++++++++++++++++++++++++++");
+                Console.WriteLine("após normalizar");
+                Console.Write(con.imprimirBinario(resultadoExpoente) + " - ");
+                Console.WriteLine(con.imprimirBinario(resultadoSomaMantissa));
 
                 #region Reunir para o vetor resultado final
                 posExpoente = 0;
