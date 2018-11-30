@@ -52,75 +52,67 @@ namespace Unidade_Lógica_e_Aritmética
         {
             //Botão A and B
             textBoxResultado10.Text = Convert.ToString(encaminhaULA(decodificadorAnd, textBoxOperando1.Text, textBoxOperando2.Text));
-            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
-            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text);
-            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text);
+            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text, false);
+            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text, false);
+            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text, false);
         }
         private void button_AorB_Click(object sender, RoutedEventArgs e)
         {
             //Botão A or B
             textBoxResultado10.Text = Convert.ToString(encaminhaULA(decodificadorOr, textBoxOperando1.Text, textBoxOperando2.Text));
-            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
-            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text);
-            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text);
+            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text, false);
+            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text, false);
+            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text, false);
         }
         private void buttonSoma_Click(object sender, RoutedEventArgs e)
         {
-            string resultadoB16 = null;
-            string completar = null;
             //Botão Adição
             textBoxResultado10.Text = Convert.ToString(encaminhaULA(decodificadorSoma, textBoxOperando1.Text, textBoxOperando2.Text));
-
-            if (imprimirTelaHexa(textBoxResultado10.Text).Length < 10)
+            if (procuraVirgula(textBoxResultado10.Text) || procuraVirgula(textBoxOperando1.Text) || procuraVirgula(textBoxOperando2.Text))
             {
-                resultadoB16 = Convert.ToString(imprimirTelaHexa(textBoxResultado10.Text));
-
-                for (int i = resultadoB16.Length; i <= 10; i++)
-                    completar += "0";
-
-                textBoxResultado16.Text = resultadoB16 + completar;
+                textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text, true);
+                textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text, true);
+                textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text, true);
             }
             else
-                textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
-
-            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text);
-            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text);
+            {
+                textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text, false);
+                textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text, false);
+                textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text, false);
+            }
         }
         private void buttonSubtracao_Click(object sender, RoutedEventArgs e)
         {
-            string resultadoB16 = null;
-            string completar = null;
             //Botão subtração
             textBoxResultado10.Text = Convert.ToString(encaminhaULA(decodificadorSubtracao, textBoxOperando1.Text, textBoxOperando2.Text));
-            if (imprimirTelaHexa(textBoxResultado10.Text).Length < 10)
+            if (procuraVirgula(textBoxResultado10.Text) || procuraVirgula(textBoxOperando1.Text) || procuraVirgula(textBoxOperando2.Text))
             {
-                resultadoB16 = Convert.ToString(imprimirTelaHexa(textBoxResultado10.Text));
-
-                for (int i = resultadoB16.Length; i <= 10; i++)
-                    completar += "0";
-
-                textBoxResultado16.Text = resultadoB16 + completar;
+                textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text, true);
+                textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text, true);
+                textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text, true);
             }
             else
-                textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
-            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text);
-            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text);
+            {
+                textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text, false);
+                textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text, false);
+                textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text, false);
+            }
         }
         private void button_notA_Click(object sender, RoutedEventArgs e)
         {
             //Botão Not A
             textBoxResultado10.Text = Convert.ToString(encaminhaULA(decodificadorNotA, textBoxOperando1.Text, textBoxOperando2.Text));
-            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
-            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text);
-            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text);
+            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text, false);
+            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text, false);
+            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text, false);
         }
         private void button_notB_Click(object sender, RoutedEventArgs e)
         {
             //botão Not B
             textBoxResultado10.Text = Convert.ToString(encaminhaULA(decodificadorNotB, textBoxOperando1.Text, textBoxOperando2.Text));
-            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
-            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text);
-            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text);
+            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text, false);
+            textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text, false);
+            textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text, false);
         }
         #endregion
 
@@ -551,7 +543,7 @@ namespace Unidade_Lógica_e_Aritmética
 
             else
             {
-                Console.WriteLine("antes alterar expoente e mantissa");
+                Console.WriteLine("RECEBIDO DO CONVERSOR");
                 Console.Write(con.imprimirBinario(expoenteB) + " - ");
                 Console.WriteLine(con.imprimirBinario(mantissaB));
 
@@ -576,6 +568,15 @@ namespace Unidade_Lógica_e_Aritmética
                 ula8.ULA8Bits(expoenteB, expoenteUm, decodificadorSoma, expoenteB); //aumentar o expoente B em 1
                 #endregion
 
+                Console.WriteLine("BIT IMPLICITO + 1 CASA");
+                Console.Write(con.imprimirBinario(expoenteB) + " - ");
+                Console.WriteLine(con.imprimirBinario(mantissaB));
+
+                Console.Write(con.imprimirBinario(expoenteA) + " - ");
+                Console.WriteLine(con.imprimirBinario(mantissaA));
+
+                Console.WriteLine("+++++++++++++++++++++++++++++++++++++++++++++++");
+
                 #region igualar o expoente
                 while (con.imprimirBinario(expoenteA) != con.imprimirBinario(expoenteB))
                 {
@@ -597,7 +598,7 @@ namespace Unidade_Lógica_e_Aritmética
                 }
                 #endregion
 
-                Console.WriteLine("antes soma");
+                Console.WriteLine("EXPOENTES IGUALADOS");
                 Console.Write(con.imprimirBinario(expoenteB) + " - ");
                 Console.WriteLine(con.imprimirBinario(mantissaB));
 
@@ -650,16 +651,8 @@ namespace Unidade_Lógica_e_Aritmética
                         }
                         else
                         {
-
-                            Console.WriteLine("aDAUSDIUIAJSDIJIO AHISUDIAHOISDJ ASOHCOAYSUDIYAISYIDAYSIDIAUSIUDYIUYAIUSYDUIAYSU");
-                            
-                            Console.WriteLine(con.imprimirBinario(mantissaB));
-
+                            //+a + (-b) = a - b 
                             mantissaB = con.complemento2(mantissaB);
-                            Console.WriteLine("erro de merda");
-                            
-                            Console.WriteLine(con.imprimirBinario(mantissaB));
-                            Console.WriteLine("aDAUSDIUIAJSDIJIO AHISUDIAHOISDJ ASOHCOAYSUDIYAISYIDAYSIDIAUSIUDYIUYAIUSYDUIAYSU");
                         }
                     }
                     else
@@ -680,6 +673,13 @@ namespace Unidade_Lógica_e_Aritmética
                 }
                 #endregion
 
+                Console.WriteLine("SINAL");
+                Console.Write(con.imprimirBinario(expoenteB) + " - ");
+                Console.WriteLine(con.imprimirBinario(mantissaB));
+
+                Console.Write(con.imprimirBinario(expoenteA) + " - ");
+                Console.WriteLine(con.imprimirBinario(mantissaA));
+
                 #region Fazer soma ou subtração
                 bool[] resultadoSomaMantissa = new bool[24];
                 bool[] resultadoExpoente = new bool[8];
@@ -687,7 +687,7 @@ namespace Unidade_Lógica_e_Aritmética
 
                 if (!f)
                 {
-                    ula24.ULA24Bits(mantissaA, mantissaB, decodificadorSoma, resultadoSomaMantissa);
+                    ula24.ULA24Bits(mantissaA, mantissaB, decodificadorSubtracao, resultadoSomaMantissa);
                     resultadoExpoente = expoenteA;
                 }
                 else
@@ -698,28 +698,40 @@ namespace Unidade_Lógica_e_Aritmética
                 #endregion
 
                 Console.WriteLine("++++++++++++++++++++++++++++++++++++");
-                Console.WriteLine("antes normalizar");
+                Console.WriteLine("resultado da soma");
                 Console.Write(con.imprimirBinario(resultadoExpoente) + " - ");
                 Console.WriteLine(con.imprimirBinario(resultadoSomaMantissa));
 
                 #region normalizar
-                bool repetir = true;
+                bool repetir = true, overflow = false;
                 while (repetir)
                 {
-                    if (!resultadoSomaMantissa[0])
+                    if (con.BinarioParaInteiro(resultadoExpoente) > 0)
                     {
-                        resultadoSomaMantissa = ShiftLogical.shiftLeftLogical(resultadoSomaMantissa);
-                        ula8.ULA8Bits(resultadoExpoente, con.complemento2(expoenteUm), decodificadorSubtracao, resultadoExpoente); //aumentar o expoente A em 1
+                        if (!resultadoSomaMantissa[0])
+                        {
+                            resultadoSomaMantissa = ShiftLogical.shiftLeftLogical(resultadoSomaMantissa);
+                            ula8.ULA8Bits(resultadoExpoente, con.complemento2(expoenteUm), decodificadorSubtracao, resultadoExpoente); //aumentar o expoente A em 1
+                        }
+                        else
+                            repetir = false;
                     }
                     else
+                    {
                         repetir = false;
+                        overflow = true;
+                    }
+                        
                 }
-                resultadoSomaMantissa = ShiftLogical.shiftLeftLogical(resultadoSomaMantissa);
-                ula8.ULA8Bits(resultadoExpoente, con.complemento2(expoenteUm), decodificadorSubtracao, resultadoExpoente); //aumentar o expoente A em 1
+                if(!overflow)
+                {
+                    resultadoSomaMantissa = ShiftLogical.shiftLeftLogical(resultadoSomaMantissa);
+                    ula8.ULA8Bits(resultadoExpoente, con.complemento2(expoenteUm), decodificadorSubtracao, resultadoExpoente); //aumentar o expoente A em 1
+                }
                 #endregion
 
                 Console.WriteLine("++++++++++++++++++++++++++++++++++++");
-                Console.WriteLine("após normalizar");
+                Console.WriteLine("normalizado");
                 Console.Write(con.imprimirBinario(resultadoExpoente) + " - ");
                 Console.WriteLine(con.imprimirBinario(resultadoSomaMantissa));
 
@@ -739,6 +751,7 @@ namespace Unidade_Lógica_e_Aritmética
                 }
                 #endregion
 
+                Console.WriteLine("\n\nFIM");
                 if (inverteu)
                     return con.BinarioParaPontoFlutuante(resultadoFinal) * -1;
                 else
@@ -851,26 +864,25 @@ namespace Unidade_Lógica_e_Aritmética
         #endregion
 
         #region Resultados
-        private string imprimirTelaHexa(string numero)
+        
+        private string imprimirTelaHexa(string numero, bool hexa)
         {
             Conversor con = new Conversor();
             string resposta = null;
 
-            if (numero[0] == '-')
-                resposta += "1x";
-            else
-                resposta += "0x";
-
             //resultado
-            if (procuraVirgula(numero))
+            if (hexa)
             {
-                return resposta + con.BinarioParaHexadecimal(con.PontoFlutuanteParaBinario(float.Parse(numero)));
+                return "0x" + con.BinarioParaHexadecimal(con.PontoFlutuanteParaBinario(float.Parse(numero)));
             }
             else
             {
                 int num = Convert.ToInt32(numero);
                 if (num < 0)
+                {
                     num *= -1;
+                    resposta = "-";
+                }
 
                 if (num > 255)
                     return resposta + con.BinarioParaHexadecimal(con.InteiroParaBinario(24, num));
