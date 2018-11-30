@@ -488,10 +488,6 @@ namespace Unidade_Lógica_e_Aritmética
             bool[] mantissaA = new bool[24], mantissaB = new bool[24];
             bool sinalA, sinalB;
 
-            //saber se fiz complemento2 em alguns dos operandos
-            bool complemento2A = false;
-            bool complemento2B = false;
-
             //números convertidos
             bool[] NumeroA = con.PontoFlutuanteParaBinario(a);
             bool[] NumeroB = con.PontoFlutuanteParaBinario(b);
@@ -524,7 +520,7 @@ namespace Unidade_Lógica_e_Aritmética
             if (a == 0)
                 return con.BinarioParaPontoFlutuante(NumeroB);
 
-            else if(b == 0)
+            else if (b == 0)
                 return con.BinarioParaPontoFlutuante(NumeroA);
 
             else
@@ -628,11 +624,16 @@ namespace Unidade_Lógica_e_Aritmética
                         }
                         else
                         {
-                            //+a + (-b) = a - b 
-                            //fazer complemento2 no B
-                            mantissaB = con.complemento2(mantissaB);
 
+                            Console.WriteLine("aDAUSDIUIAJSDIJIO AHISUDIAHOISDJ ASOHCOAYSUDIYAISYIDAYSIDIAUSIUDYIUYAIUSYDUIAYSU");
+                            
                             Console.WriteLine(con.imprimirBinario(mantissaB));
+
+                            mantissaB = con.complemento2(mantissaB);
+                            Console.WriteLine("erro de merda");
+                            
+                            Console.WriteLine(con.imprimirBinario(mantissaB));
+                            Console.WriteLine("aDAUSDIUIAJSDIJIO AHISUDIAHOISDJ ASOHCOAYSUDIYAISYIDAYSIDIAUSIUDYIUYAIUSYDUIAYSU");
                         }
                     }
                     else
@@ -641,15 +642,13 @@ namespace Unidade_Lógica_e_Aritmética
                         {
                             //-a + (+b) = +b + (-a) = b - a
                             //fazer complemento2 no A, foi tratado por causa do inverteu
-                            Console.WriteLine("++++++++++++++++++++++++++++++++++++");
-                            Console.WriteLine("ERRO DE MERDA");
-                            Console.Write(con.imprimirBinario(expoenteB) + " - ");
                             mantissaA = con.complemento2(mantissaA);
                         }
                         else //funciona
                         {
                             //-a + (-b) = -a - b
                             //somar e dizer que inverteu
+                            inverteu = true;
                         }
                     }
                 }
@@ -660,7 +659,7 @@ namespace Unidade_Lógica_e_Aritmética
                 bool[] resultadoExpoente = new bool[8];
                 bool resultadoSinal; //o que fazer com isso?
 
-                if(!f)
+                if (!f)
                 {
                     ula24.ULA24Bits(mantissaA, mantissaB, decodificadorSoma, resultadoSomaMantissa);
                     resultadoExpoente = expoenteA;
@@ -721,17 +720,17 @@ namespace Unidade_Lógica_e_Aritmética
             }
         }
         private bool procuraVirgula(string numero)
-    {
-        for (int pos = 0; pos < numero.Length; pos++)
         {
-            if (numero[pos] == ',')
-                return true;
-        }
+            for (int pos = 0; pos < numero.Length; pos++)
+            {
+                if (numero[pos] == ',')
+                    return true;
+            }
 
-        return false;
-    }
+            return false;
+        }
         #endregion
-        
+
         #region arquivo
         public void calcularArquivo()
         {
@@ -835,7 +834,7 @@ namespace Unidade_Lógica_e_Aritmética
                 resposta += "1x";
             else
                 resposta += "0x";
-            
+
             //resultado
             if (procuraVirgula(numero))
             {
@@ -847,7 +846,7 @@ namespace Unidade_Lógica_e_Aritmética
                 if (num < 0)
                     num *= -1;
 
-                if(num > 255)
+                if (num > 255)
                     return resposta + con.BinarioParaHexadecimal(con.InteiroParaBinario(24, num));
                 else
                     return resposta + con.BinarioParaHexadecimal(con.InteiroParaBinario(8, num));

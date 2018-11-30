@@ -331,7 +331,7 @@ namespace Unidade_Lógica_e_Aritmética
                 if (vet32[t])
                     zero = true;
 
-            if (zero)
+            if (!zero)
                 return 0.0f;
 
             // Converte o expoente binário para decimal
