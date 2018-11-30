@@ -66,17 +66,43 @@ namespace Unidade_Lógica_e_Aritmética
         }
         private void buttonSoma_Click(object sender, RoutedEventArgs e)
         {
+            string resultadoB16 = null;
+            string completar = null;
             //Botão Adição
             textBoxResultado10.Text = Convert.ToString(encaminhaULA(decodificadorSoma, textBoxOperando1.Text, textBoxOperando2.Text));
-            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
+
+            if (imprimirTelaHexa(textBoxResultado10.Text).Length < 10)
+            {
+                resultadoB16 = Convert.ToString(imprimirTelaHexa(textBoxResultado10.Text));
+
+                for (int i = resultadoB16.Length; i <= 10; i++)
+                    completar += "0";
+
+                textBoxResultado16.Text = resultadoB16 + completar;
+            }
+            else
+                textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
+
             textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text);
             textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text);
         }
         private void buttonSubtracao_Click(object sender, RoutedEventArgs e)
         {
+            string resultadoB16 = null;
+            string completar = null;
             //Botão subtração
             textBoxResultado10.Text = Convert.ToString(encaminhaULA(decodificadorSubtracao, textBoxOperando1.Text, textBoxOperando2.Text));
-            textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
+            if (imprimirTelaHexa(textBoxResultado10.Text).Length < 10)
+            {
+                resultadoB16 = Convert.ToString(imprimirTelaHexa(textBoxResultado10.Text));
+
+                for (int i = resultadoB16.Length; i <= 10; i++)
+                    completar += "0";
+
+                textBoxResultado16.Text = resultadoB16 + completar;
+            }
+            else
+                textBoxResultado16.Text = imprimirTelaHexa(textBoxResultado10.Text);
             textBoxOperando16A.Text = imprimirTelaHexa(textBoxOperando1.Text);
             textBoxOperando16B.Text = imprimirTelaHexa(textBoxOperando2.Text);
         }

@@ -115,25 +115,25 @@ namespace Unidade_Lógica_e_Aritmética
                     switch (seg)
                     {
                         case "0000":
-                            numB16 += 0; break;
+                            numB16 += "0"; break;
                         case "0001":
-                            numB16 += 1; break;
+                            numB16 += "1"; break;
                         case "0010":
-                            numB16 += 2; break;
+                            numB16 += "2"; break;
                         case "0011":
-                            numB16 += 3; break;
+                            numB16 += "3"; break;
                         case "0100":
-                            numB16 += 4; break;
+                            numB16 += "4"; break;
                         case "0101":
-                            numB16 += 5; break;
+                            numB16 += "5"; break;
                         case "0110":
-                            numB16 += 6; break;
+                            numB16 += "6"; break;
                         case "0111":
-                            numB16 += 7; break;
+                            numB16 += "7"; break;
                         case "1000":
-                            numB16 += 8; break;
+                            numB16 += "8"; break;
                         case "1001":
-                            numB16 += 9; break;
+                            numB16 += "9"; break;
                         case "1010":
                             numB16 += "A"; break;
                         case "1011":
